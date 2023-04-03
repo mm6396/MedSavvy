@@ -1,0 +1,33 @@
+.dashboardhome-div{
+    // background-color: black;
+    
+    .card-div{
+        margin-right: 20px;
+        margin-bottom: 20px;
+        min-width: 14rem;
+        width: 30rem;
+        min-height: 15rem;
+        // box-shadow: 5px 5px 15px -1px rgb(0 21 41 / 12%);
+        transition: .5s;
+        // background-color: hsla(0,0%,100%,.95);
+        background: -webkit-linear-gradient(top, #003061, #3d9af7 );
+        // color: white;
+    }
+    
+    .card-div:hover{
+        box-shadow: 5px 5px 15px -1px rgba(0,0,0, .5);
+    }
+    
+    .view-btn{
+        background-color: white;
+        color: #003061;
+        font-weight: bold;
+        border: none;
+    }
+    
+    .view-btn:hover{
+        box-shadow: 5px 5px 15px -1px rgba(0,0,0, .5);
+        // background-color: #FCB53B;
+    }
+
+} 

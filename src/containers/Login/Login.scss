@@ -1,0 +1,40 @@
+.login-layout{
+
+    .ant-btn:hover{
+        background-color: #00ab55;
+        outline: none;
+    }
+
+ .login-form {
+     position: fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     min-width: 450px;
+ }
+ .ant-card-head-title {
+    text-align: center;
+    font-weight: bold;
+    color: #00ab55;
+    font-size: larger;
+
+ }
+ .ant-input-affix-wrapper {
+     color: #c4b6b6;
+     border-radius: 40px;
+     height: 38px;
+ }
+ 
+
+ .login-form-button {
+     width: 100%;
+     border-radius: 50px;
+     height: 42px;
+     background-color: #00ab55;
+     border-color: #00ab55;
+     font-size: large;
+     font-weight: bold;
+ }
+ 
+ 
+}

@@ -1,0 +1,83 @@
+.campaign-create-form {
+    .ant-row{
+       .region-col {
+           padding-left: 0 !important;
+       }
+       .ant-form-item-label > label {
+           font-size: 12px;
+           color: #8B8B8B;
+           font-weight: 600;
+       }
+       h5 {
+           margin-bottom: 15px;
+       }
+       .anticon-calendar {
+           color: #004F9F;
+       }
+       div.ant-tooltip-inner {
+           background-color:white;
+           color:#0E2B63 ;
+       }
+       .ant-upload-drag {
+           border-radius: 30px;
+           height: 140px;
+       }
+
+       p.ant-upload-text {
+        font-size: 14px;
+        font-weight: 600;
+       }
+
+       .ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon{
+           font-size: 32px;
+       }
+       .ant-col{
+           .add-btn{
+               background-color: #004F9F;
+               color: white;
+               font-size: 12px;
+           }
+           .add-btn:hover{
+               background-color: #0E2B63;
+           }
+
+           .assign-btn{
+               background-color: #00B1EB;
+               color: white;
+               font-size: 12px;
+               width: 110px;
+           }
+           .assign-btn:hover{
+               background-color: deepskyblue;
+           }
+       }
+       .exapndparent-text {
+           font-size: 12px;
+           color: #004F9F;
+           font-weight: 600;
+       }
+
+       .jsonerror {
+           border-color: #ff4d4f !important;
+           box-shadow: 0 0 2px #ff4d4f33;
+       }
+
+       .required:after {
+        content:" *";
+        color: #ff4d4f;
+      }
+   }
+}
+
+@media only screen and  (max-width: 1024px) {
+    .button-row {
+        text-align: center;
+    }
+}
+@media only screen and  (max-width: 320px) {
+    .add-btn {
+        margin-left: -20px;
+        font-size: 9.5px !important;
+        width: 180px;
+    }
+}

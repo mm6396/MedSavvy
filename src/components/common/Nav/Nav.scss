@@ -1,0 +1,219 @@
+
+  .nav-header{
+    background-color: #F7F7F7;
+    height: 96px;
+    padding: 10px;
+
+    .rightside-div{
+      display: contents;
+      // display: flex;
+      align-items: center;
+      margin: 0 0 0 -55%;
+
+      .notification-div{
+        min-width: 58px;
+        margin: 0 0 0 64%;
+      }
+    }
+    
+    .logo {
+      // float: left;
+      color: #00ab55;
+      // margin-right: 90px;
+      font-weight: bold;
+      font-size: 25px;
+      min-width: max-content;
+      display: flex;
+      justify-content: center;
+
+      .prism-crm-div{
+        margin: 0;
+      }
+    }
+
+    .ant-dropdown-link{
+      .account-div{
+        background-color: none;
+        padding: 5px;
+        transition: .3s;
+        
+        .dropdown-button{
+          color: rgba(0,0,0,.5);
+          transform: rotate(0);
+          transition: .3s linear;
+        }
+      }
+      .account-div:hover{
+        background-color: white;
+        box-shadow: 0px -1px 11px -4px rgba(0,0,0,0.75);
+        border-radius: .5rem;
+
+        .dropdown-button{
+          color:  #00ab55;
+          transform: rotate(-180deg);
+        }
+      }
+    }
+
+
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      border-top-left-radius: .5rem;
+      border-top-right-radius: .5rem;
+      padding: 0 5px;
+      cursor: pointer;      
+      // margin: 0 0 0 -46%;
+      // min-width: 150px;
+      // width: 200px;x
+      // max-width: 200px;
+      // overflow: hidden;
+      transition: .3s;  
+      
+      .dropdown-button{
+        color: rgba(0,0,0,.5);
+        transform: rotate(0);
+        margin-left: 5px;
+        transition: .3s linear;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 100%;
+        left: 0px;
+        box-shadow: 0px 15px 16px 0px rgba(0,0,0,0.2);
+        z-index: 10000;
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+        transition: .3s;
+
+        a{
+          background-color: none;
+          padding: 0 0 0 10px;
+          font-weight: 600;
+          transition: .3s;
+
+          .account-icon{
+            // font-size: 16px;
+            color: #E72582;
+            margin: 0 10px 0 0;
+          }
+        }
+        a:hover{
+          background-color: #E72582;
+          color: white;
+          border-radius: .2rem;
+          
+
+
+          .account-icon{
+            color: white;
+          }
+        }
+      }
+    
+    }
+
+    .dropdown:hover{
+      box-shadow: 0px 15px 16px 0px rgba(0,0,0,0.2);
+      background-color: white;
+
+      .dropdown-button{
+        color:  #E72582;
+        transform: rotate(-180deg);
+      }
+
+      .dropdown-content{
+        display: block;
+
+      }
+
+    }
+
+  }
+
+  .menu-div{
+    box-shadow: 0px 12px 11px -4px rgba(0,0,0,0.75);
+    top: -15px;
+    border-radius: .5rem;
+    
+    li{
+      a{
+        font-weight: 600;
+      }
+    }
+   
+  }
+  .menu-item-div{
+    max-height: 21rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 26rem;
+    padding: 19px 3px;
+    box-shadow: 0px 10px 33px 3px rgba(0,0,0,0.18);
+    border-radius: 10px;
+    transition: .5s;
+
+    .ant-dropdown-menu-item.notseen{
+      background-color: #d2d0d04f;
+    }
+
+    .ant-dropdown-menu-item {
+      border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .msg-text{
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ant-badge-status-dot {
+      height: 10px;
+      width: 10px;
+    }
+  }
+
+    
+
+
+  @media only screen and (max-width: 600px) {
+    .nav-header{
+      .logo {
+        // margin-right: 20px;
+        margin-left: -20px;
+        // font-size: 10px !important;
+        transform: scale(0.7);
+        // justify-content: start;
+        display: block;
+
+        .prism-crm-div{
+          display: none;
+        }
+      }
+
+      .rightside-div{
+        display: flex;
+        align-items: center;
+        margin: 0 0 0 -4%;
+
+        .notification-div{
+          margin: 0 0 0 24px;
+          transform: scale(.7);
+        }
+      }
+      .dropdown{
+        transform: scale(.7);
+        margin: 0 0 0 -37px;
+      }
+
+    }
+
+    .menu-item-div{
+      width: 23.3rem;
+      overflow: scroll;
+    }
+  }

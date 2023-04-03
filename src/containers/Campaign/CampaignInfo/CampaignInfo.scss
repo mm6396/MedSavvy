@@ -1,0 +1,51 @@
+.campaign-info {
+	.ant-descriptions-header {
+		border-bottom: 1px solid skyblue;
+		margin-bottom: 25px;
+	}
+ 	.ant-descriptions-title {
+		color:#E72582;
+		margin-bottom: 15px;
+		// text-align: center;
+		font-size: 20px;
+		border-bottom: 1px;
+ 	}
+	.ant-descriptions-item-label {
+		color: #004f9f;
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 1.5715;
+		text-align: start;
+	}
+	.ant-descriptions-item-content {
+		font-weight: 600;
+	}
+	.ant-card-head {
+		background: #0000001A;
+		color: #004f9f;
+		font-weight: 600;
+		padding: 8px 0 5px 3px;
+		font-size: 14px;
+		height: 40px;
+		min-height: 0;
+	}
+	.ant-card-head-title {
+		padding: 0;
+		text-align: center;
+	}
+	.trgt span {
+		color: #004f9f;
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 1.5715;
+		text-align: start;
+	}
+
+	p{
+		font-weight: 600;
+	}
+
+	.ant-badge-status-default {
+		background-color: #1890ff;
+	}
+}

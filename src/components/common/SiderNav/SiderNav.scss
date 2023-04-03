@@ -1,0 +1,60 @@
+.sidernav-affix{
+
+    .site-layout-background{
+    
+        // min-width: 225px !important;
+        // position: fixed;
+    
+        .ant-layout-sider-zero-width-trigger{
+            // background-color:  #00B1EB;
+            // border: 1px solid white;
+        }
+    
+        .ant-layout-sider-children{
+            .ant-menu{
+                // background-color: #00B1EB;
+    
+                .manager-menu{
+                    font-weight: 600; 
+                    display: flex; 
+                    align-items: center;
+    
+                    .menu-icon{
+                        font-size: 17px;
+                        margin: 0 10px 0 0;
+                    }
+                }
+    
+                li{
+                    background-color: #001529;
+                }
+                .ant-menu-item-selected{
+                    // background-color: #00B1EB;
+                    color: white;
+                }
+    
+                .user-manager:active {
+                       svg{
+                           color: white;
+                       } 
+                       span{
+                           color: white;
+                       }
+                }
+            }
+        }
+    }
+}
+
+
+@media(max-width: 700px){
+
+    .sidernav-affix{
+        .ant-affix{
+            z-index: 11 !important;
+        }
+        .sider-res-pos-div{
+            position: absolute;
+        }
+    }
+}

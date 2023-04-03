@@ -1,0 +1,48 @@
+// .site-layout-background {
+//     background: #fff;
+
+
+//   }
+
+.header{
+  // height: 50px;
+  overflow: hidden;
+  background-color: #00ab55;
+  // display: flex;
+  // align-items: center;
+
+  .ant-menu{
+    height: 1px;
+    // display: flex;
+    // align-items: center;
+    background-color: #00ab55;
+    background: none;
+    font-weight: 600;
+
+    .ant-menu-item-selected{
+      background-color:#111212;
+    }
+   
+  }
+  .ant-menu-dark{
+    .ant-menu-item{
+      border: .01em solid white;
+      height: 64px;
+      font-size: 13px;
+
+    }
+    .ant-menu-item:hover{
+      background-color: #001529;
+    }
+  }
+
+  .search-input{
+    height: 20px;
+    // width: 0;
+    display: none;
+  }
+  .input_open{
+    display: flex;
+    width: 100% ;
+  }
+}
