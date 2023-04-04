@@ -8,6 +8,8 @@ import axios from 'axios';
 
 // import './CampaignCreate.scss';
 
+const { Option } = Select;
+
 const { RangePicker } = DatePicker;
 
 const UserCreate = () => {
@@ -15,6 +17,7 @@ const UserCreate = () => {
     let history = useHistory();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [roleList, setRoleList] = useState([]);
 
     useEffect(() => {
 
@@ -34,6 +37,7 @@ const UserCreate = () => {
                     }
                 });
                 console.log(data);
+                setRoleList(data.data);
                 setLoading(false);
             } catch (error) {
                 if (error?.response?.data?.message) {
@@ -50,16 +54,14 @@ const UserCreate = () => {
     const onFinish = async (values) => {
         console.log(values)
         try {
-
-            console.log(values);
-            const { data } = await CampaignManagerAPI.post('/create-survey', values, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-                }
-            });
-            notification('Successful', `New Campaign ${data.response.name}  Created successfully`, 'success');
-            setLoading(false)
-
+            // const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/create', values, {
+            //     headers: {
+            //         Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+            //     }
+            // });
+            // notification('Successful', `New user Created successfully`, 'success');
+            // setLoading(false)
+            history.push('list')
 
         } catch (error) {
             setLoading(false);
@@ -140,16 +142,19 @@ const UserCreate = () => {
                         <h5 className="required" style={{ fontWeight: '600', color: '#004F9F', fontSize: '12px' }}> Role </h5>
                         <Form.Item name="role_id" rules={[{ required: true, message: 'Please select typpe!' }]}>
                             <Select
-                                defaultValue=""
-                                style={{ width: '100%' }}
-                                //   onChange={handleChange}
-                                options={[
-                                    { value: 'Quality Check', label: 'Admin' },
-                                    { value: 'Launch', label: 'SalesPerson' },
-                                    { value: 'New Product', label: 'Manager' },
-                                ]}
-                                placeholder="enter role.."
+                                    placeholder="Role Selection"
+                                    style={{ width: "100%" }}
+                                    allowClear
+                                    showSearch
+                                    showArrow
+                                    optionFilterProp="children"
                             >
+                                {roleList?.map((v, i) => (
+                                    <Option value={v.id} key={v.id}>
+                                         {v.role_name}
+                                    </Option>
+                                ))}
+                           
                             </Select>
                         </Form.Item>
                         <h5 className="required" style={{ fontWeight: '600', color: '#004F9F', fontSize: '12px' }}> Username </h5>
