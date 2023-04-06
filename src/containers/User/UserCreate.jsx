@@ -54,13 +54,13 @@ const UserCreate = () => {
     const onFinish = async (values) => {
         console.log(values)
         try {
-            // const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/create', values, {
-            //     headers: {
-            //         Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-            //     }
-            // });
-            // notification('Successful', `New user Created successfully`, 'success');
-            // setLoading(false)
+            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/create', values, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+                }
+            });
+            notification('Successful', `New user Created successfully`, 'success');
+            setLoading(false)
             history.push('list')
 
         } catch (error) {

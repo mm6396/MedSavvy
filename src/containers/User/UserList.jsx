@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
 import { FaEdit, FaUserCheck } from 'react-icons/fa';
 import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
@@ -14,6 +14,7 @@ import ErrorHandler from '../../util/ErrorHandler/ErrorHandler'
 
 import './User.scss';
 import axios from 'axios';
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -52,6 +53,7 @@ const UserList = () => {
     };
 
     const deleteCampaign = (id) => {
+        console.log(id)
         confirm({
             title: 'Do you want to delete these items?',
             icon: <ExclamationCircleOutlined />,
@@ -61,13 +63,13 @@ const UserList = () => {
             cancelText: 'No',
             onOk: async () => {
                 try {
-                    await CampaignManagerAPI.delete(`/delete-campaign/${id}`, {
+                    await axios.patch(`http://localhost:8001/api/v1/userRouter/delete-user`, {id},{
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                         }
                     });
 
-                    let temp = data.filter(i => i.key !== id).map((v, i) => {
+                    let temp = data.filter(i => i.id !== id).map((v, i) => {
                         return {
                             ...v,
                             user_id: i + 1,
@@ -75,7 +77,7 @@ const UserList = () => {
                     });
                     setdata([...temp]);
                     setDataSet([...temp]);
-                    notification('Deleted Successfully', "Campaign has been removed", 'warning');
+                    notification('Deleted Successfully', "User has been removed", 'warning');
 
                 } catch (error) {
                     if (error?.response?.data?.message) {
@@ -122,6 +124,9 @@ const UserList = () => {
         })();
     }, []);
 
+    const defaultOnErrorFn = useRef(window.onerror);
+
+
     const columns = [
         {
             title: "Sn.",
@@ -167,7 +172,7 @@ const UserList = () => {
                         <FaUserCheck className=" table-icon assign "
                             onClick={(e) => {
                                 history.push({
-                                    pathname: `/manager/campaign/assign/${record.key}`,
+                                    pathname: `/manager/campaign/assign/${record.id}`,
                                 });
                             }}
                             key={record.id}
@@ -179,7 +184,7 @@ const UserList = () => {
                         <FaEdit className=" table-icon edit "
                             onClick={(e) => {
                                 history.push({
-                                    pathname: '/manager/campaign/update/' + record.key,
+                                    pathname: '/manager/campaign/update/' + record.id,
                                 });
                             }}
                             key={record.key}
@@ -190,7 +195,7 @@ const UserList = () => {
                   {localStorage.getItem('campaign')?.split(',').includes('4') && */}
                     <Tooltip title="Delete" >
                         <RiDeleteBinLine className=" table-icon  delete"
-                            onClick={(e) => { deleteCampaign(record.key) }}
+                            onClick={(e) => { deleteCampaign(record.id) }}
                             key={record.key}
                         />
                     </Tooltip>

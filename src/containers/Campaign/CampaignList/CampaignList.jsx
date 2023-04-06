@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
 import { FaEdit, FaUserCheck } from 'react-icons/fa';
 import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
-import { EyeOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, DownOutlined } from '@ant-design/icons';
+import { EditOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, DownOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { IoMdSettings } from 'react-icons/io';
 import { GiMatchHead } from 'react-icons/gi';
@@ -13,6 +13,7 @@ import { CampaignManagerAPI } from '../../../util/ApiGateway/Api';
 import ErrorHandler from '../../../util/ErrorHandler/ErrorHandler'
 
 import './CampaignList.scss';
+import axios from 'axios';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -20,66 +21,8 @@ const { confirm } = Modal;
 const CampaignList = () => {
     const [loading, setLoading] = useState(true);
     const [loadingSwitch, setLoadingSwitch] = useState(false);
-    const [dataSet, setDataSet] = useState([
-        {
-            user_id: 1,
-            name: 'Campaign on Tylenol',
-            type:'Local Launching',
-            from_date:'04/04/23',
-            to_date:'04/14/23'
-        },
-        {
-            user_id: 2,
-            name: 'Campaign on Tylenol 2',
-            type:'global Launching',
-            from_date:'04/04/23',
-            to_date:'04/29/23'
-        },
-        {
-            user_id: 3,
-            name: 'Campaign on Tylenol 3',
-            type:'New product',
-            from_date:'04/04/23',
-            to_date:'04/20/23'
-        },
-        {
-            user_id: 4,
-            name: 'Campaign on Tylenol 4',
-            type:'Vitamins Quality check',
-            from_date:'04/04/23',
-            to_date:'04/24/23'
-        }
-    ]);
-    const [data, setdata] = useState([
-        {
-            user_id: 1,
-            name: 'Campaign on Tylenol',
-            type:'Local Launching',
-            from_date:'04/04/23',
-            to_date:'04/14/23'
-        },
-        {
-            user_id: 2,
-            name: 'Campaign on Tylenol 2',
-            type:'global Launching',
-            from_date:'04/04/23',
-            to_date:'04/29/23'
-        },
-        {
-            user_id: 3,
-            name: 'Campaign on Tylenol 3',
-            type:'New product',
-            from_date:'04/04/23',
-            to_date:'04/20/23'
-        },
-        {
-            user_id: 4,
-            name: 'Campaign on Tylenol 4',
-            type:'Vitamins Quality check',
-            from_date:'04/04/23',
-            to_date:'04/24/23'
-        }
-    ]);
+    const [dataSet, setDataSet] = useState([]);
+    const [data, setdata] = useState([]);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 25 });
     let history = useHistory();
 
@@ -147,75 +90,82 @@ const CampaignList = () => {
         });
     };
 
+    const resizeObserver = new ResizeObserver(entries => {
+        window.requestAnimationFrame(() => {
+            // ...your code here
+        });
+    });
 
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             setLoading(true);
-    //             const { data } = await CampaignManagerAPI.get('/get-campaign-list', {
-    //                 headers: {
-    //                     Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-    //                 }
-    //             });
-    //             // console.log(data);
-    //             const temp = data.response.map((v, i) => {
-    //                 return {
-    //                     key: v.id,
-    //                     user_id: i + 1,
-    //                     name: v.name,
-    //                     to_date: v.to_date,
-    //                     sub_camp: data.response[data.response.findIndex(value => value.parent == v.id)]?.name || null,
-    //                     version: v.version,
-    //                     // swp: 1,
-    //                     ptr: v.ptr_trgt,
-    //                     call_target_fran: v.franchise_call_trgt,
-    //                     call_target_sob: v.sob_call_trgt,
-    //                     swapping_fran: v.franchise_swapping_trgt,
-    //                     swapping_sob: v.sob_swapping_trgt,
-    //                     parent: data.response[data.response.findIndex(value => value.id == v.parent)]?.name || null,
-    //                 }
-    //             });
-    //             setDataSet([...temp]);
-    //             setdata([...temp]);
-    //             setLoading(false);
-    //         } catch (error) {
-    //             if (error?.response?.data?.message) {
-    //                 ErrorHandler(error?.response?.data?.message, history);
-    //                 notification(error?.response?.data?.message, 'Please fix this error and try again. Otherwise communicate with the admin', 'error');
-    //             } else {
-    //                 notification('Something went wrong', 'Please check your internet connection and try again or communicate with the admin', 'error');
-    //             }
-    //         }
-    //     })();
-    // }, []);
+    useEffect(() => {
+        const cancelToken = axios.CancelToken;
+        const source = cancelToken.source();
+        (async () => {
+            try {
+                setLoading(true);
+                const { data } = await axios.get('http://localhost:8001/api/v1/campaignRouter/campaignList', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+
+                    },
+                    cancelToken: source.token
+                });
+                console.log(data);
+                let users = data.data.map((v,i)=> {
+                    return {
+                        ...v,
+                        key: i+1
+                    }
+                })
+                setDataSet(users);
+                setdata(users);
+                setLoading(false);
+            } catch (error) {
+                if (error?.response?.data?.message) {
+                    ErrorHandler(error?.response?.data?.message, history);
+                    notification(error?.response?.data?.message, 'Please fix this error and try again. Otherwise communicate with the admin', 'error');
+                } else {
+                    notification('Something went wrong', 'Please check your internet connection and try again or communicate with the admin', 'error');
+                }
+            }
+        })();
+        return () => {
+            source.cancel("axios request cancelled");
+        };
+    }, []);
 
     const columns = [
       {
         title: "Sn.",
-        dataIndex: "user_id",
+        dataIndex: "key",
         key: "user_id",
         fixed: "left",
       },
       {
         title: "Campaign Name",
-        dataIndex: "name",
+        dataIndex: "camp_name",
         key: "name",
         fixed: "left",
       },
       {
         title: "Campaign Type",
-        dataIndex: "type",
+        dataIndex: "type_name",
+        key: "name",
+        fixed: "left",
+      },
+      {
+        title: "Survey Target",
+        dataIndex: "survey_target",
         key: "name",
         fixed: "left",
       },
       {
         title: "Start Date",
-        dataIndex: "to_date",
+        dataIndex: "start_date",
         key: "to_date",
       },
       {
         title: "End Date",
-        dataIndex: "to_date",
+        dataIndex: "end_date",
         key: "to_date",
       },
       {
@@ -224,16 +174,18 @@ const CampaignList = () => {
           render: (text, record) => (
               <div className="table-icons" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
                   {/* {localStorage.getItem('campaign')?.split(',').includes('6') && */}
-                      <Tooltip title="assign" >
-                          <FaUserCheck className=" table-icon assign "
-                              onClick={(e) => {
-                                  history.push({
-                                      pathname: `/manager/campaign/assign/${record.key}`,
-                                  });
-                              }}
-                              key={record.id}
-                          />
-                      </Tooltip>
+                  <Tooltip title="Create Questions" >
+						<EditOutlined className=" table-icon edit "
+							onClick={(e) => {
+								console.log(record);
+								history.push({
+									pathname: '/manager/campaign/create-question/' + record.id,
+									state: record.name
+								});
+							}}
+							key={record.id}
+						/>
+					</Tooltip>
                   {/* }
                   {localStorage.getItem('campaign')?.split(',').includes('2') && */}
                       <Tooltip title="Edit" >
