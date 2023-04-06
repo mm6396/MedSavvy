@@ -5,3 +5,7 @@
  color: #ff4d4f;
 }
 
+
+body > hmr-error-overlay { // This worked for me the container element might have changed so add change accordingly 
+    display: none;
+  }

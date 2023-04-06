@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Form, Input, Row, Col, Select, DatePicker, Button } from 'antd';
 import notification from "../../util/Notification/Notification";
 import ErrorHandler from '../../util/ErrorHandler/ErrorHandler'
-import { CampaignManagerAPI } from '../../util/ApiGateway/Api';
 import axios from 'axios';
 
 // import './CampaignCreate.scss';
@@ -12,12 +11,13 @@ const { Option } = Select;
 
 const { RangePicker } = DatePicker;
 
-const UserCreate = () => {
+const UserUpdate = () => {
 
     let history = useHistory();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [roleList, setRoleList] = useState([]);
+    const { id } = useParams();
     const [ allUsers, setAllUsers ] = useState([]);
 
     useEffect(() => {
@@ -26,6 +26,41 @@ const UserCreate = () => {
         window.scrollTo(0, 0);
 
     }, []);
+
+    useEffect(() => {
+        fetchConfiguration();
+      }, []);
+
+    const fetchConfiguration = async() => {
+            try {
+                setLoading(true);
+                const { data } = await axios.get(`http://localhost:8001/api/v1/userRouter/getUser/${id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+
+                    }
+                });
+                console.log(data);
+              let user = data?.data[0];
+              form.setFieldsValue({
+                name: user?.name,
+                email: user?.email,
+                position: user?.position,
+                phone_number: user?.phone_number,
+                role_id: user?.role_id,
+                username: user?.username
+
+              })
+                setLoading(false);
+            } catch (error) {
+                if (error?.response?.data?.message) {
+                    ErrorHandler(error?.response?.data?.message, history);
+                    notification(error?.response?.data?.message, 'Please fix this error and try again. Otherwise communicate with the admin', 'error');
+                } else {
+                    notification('Something went wrong', 'Please check your internet connection and try again or communicate with the admin', 'error');
+                }
+            }
+        }
 
     useEffect(() => {
         (async () => {
@@ -53,17 +88,17 @@ const UserCreate = () => {
 
 
     const onFinish = async (values) => {
-        setLoading(true);
-        console.log(values)
+        console.log(values);
+        values.id= id;
         try {
-            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/create', values, {
+            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/update', values, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                 }
             });
-            notification('Successful', `New user Created successfully`, 'success');
+            notification('Successful', `User updated successfully`, 'success');
             setLoading(false)
-            history.push('list')
+            history.push('/manager/user/list')
 
         } catch (error) {
             setLoading(false);
@@ -116,7 +151,7 @@ const UserCreate = () => {
                                     <Input placeholder="enter email.."/>
                                 </Form.Item>
                         </div>
-                        <div>
+                        {/* <div>
                             <h5 className="required" style={{ fontWeight: '600', color: '#004F9F', fontSize: '12px' }}>Password</h5>
                             <Form.Item
                                 name="pass"
@@ -130,7 +165,7 @@ const UserCreate = () => {
                             >
                                 <Input.Password />
                             </Form.Item>
-                        </div>
+                        </div> */}
                         <div>
                             <h5 className="required" style={{ fontWeight: 'bold', color: '#004F9F', fontSize: '12px', }}> Phone Number </h5>
                             <Form.Item
@@ -160,16 +195,7 @@ const UserCreate = () => {
                             </Select>
                         </Form.Item>
                         <h5 className="required" style={{ fontWeight: '600', color: '#004F9F', fontSize: '12px' }}> Username </h5>
-                        <Form.Item name="username" 
-                            rules={[
-                                {
-                             required: true, message: 'Please select typpe!' 
-                             },
-                            //  {
-                            //     validator: (_, value) =>
-                            //       !allUsers.includes(value) ? Promise.resolve() : Promise.reject('User name Already exists'),
-                            //   },
-                             ]}>
+                        <Form.Item name="username" rules={[{ required: true, message: 'Please select typpe!' }]}>
                             <Input placeholder="enter username.."/>
                         </Form.Item>
                         <div>
@@ -187,7 +213,7 @@ const UserCreate = () => {
                     <Col >
                         <Form.Item >
                             <Button className="assign-btn" shape="round" htmlType="submit">
-                                Submit Data
+                               Update Data
                             </Button>
                         </Form.Item>
                     </Col>
@@ -197,4 +223,4 @@ const UserCreate = () => {
     );
 }
 
-export default UserCreate;
+export default UserUpdate;

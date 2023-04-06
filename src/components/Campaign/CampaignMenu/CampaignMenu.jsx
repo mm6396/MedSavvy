@@ -22,6 +22,7 @@ const CampaignMenu = () => {
             <Menu theme="dark" breakpoint="lg" collapsedWidth="0" mode="horizontal" overflowedIndicator={<DownCircleOutlined style={{ fontSize: "1.2rem", color: "orange" }} />} selectedKeys={[path]}>
                 <Menu.Item key="/manager/campaign/list" >Campaign List <Link to="/manager/campaign/list" /></Menu.Item>
                 <Menu.Item key="/manager/campaign/create" > Create Campaign <Link to="/manager/campaign/create" /></Menu.Item>
+                <Menu.Item key="/manager/campaign/type" > Create CampaigType <Link to="/manager/campaign/type" /></Menu.Item>
                 {localStorage.getItem('campaign')?.split(',').includes('1') &&
                     <Menu.Item key="/manager/campaign/create" > Create Campaign <Link to="/manager/campaign/create" /></Menu.Item>
                 }
