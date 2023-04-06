@@ -220,7 +220,7 @@ const CampaignList = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const searcher = new FuzzySearch(dataSet, ['name', 'type'], { sort: true });
+    const searcher = new FuzzySearch(dataSet, ['camp_name', 'start_date','end_date'], { sort: true });
 
     const handleSearch = (value) => {
         if (value) {
@@ -246,8 +246,8 @@ const CampaignList = () => {
           className="campaignlist-table"
           columns={columns}
           dataSource={data}
-        //   loading={loading}
-          scroll={{ x: 1000 }}
+          loading={loading}
+        //   scroll={{ x: 1000 }}
         />
       </div>
     );

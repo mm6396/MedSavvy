@@ -124,9 +124,6 @@ const UserList = () => {
         })();
     }, []);
 
-    const defaultOnErrorFn = useRef(window.onerror);
-
-
     const columns = [
         {
             title: "Sn.",
@@ -184,10 +181,11 @@ const UserList = () => {
                         <FaEdit className=" table-icon edit "
                             onClick={(e) => {
                                 history.push({
-                                    pathname: '/manager/campaign/update/' + record.id,
-                                });
+									pathname: '/manager/user/update/' + record.id,
+									state: record
+								});
                             }}
-                            key={record.key}
+                            key={record.id}
                         />
                     </Tooltip>
                     {/* }
@@ -212,7 +210,7 @@ const UserList = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const searcher = new FuzzySearch(dataSet, ['name', 'type'], { sort: true });
+    const searcher = new FuzzySearch(dataSet, ['name', 'username', 'role_name','position'], { sort: true });
 
     const handleSearch = (value) => {
         if (value) {
@@ -239,7 +237,7 @@ const UserList = () => {
                 columns={columns}
                 dataSource={data}
                 loading={loading}
-                scroll={{ x: 1000 }}
+                // scroll={{ x: 1000 }}
             />
         </div>
     );
