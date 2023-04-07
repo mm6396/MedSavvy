@@ -29,7 +29,7 @@ const SiderNav = () => {
   const [phone, setPhone] = useState(localStorage.getItem("device"));
 
   useEffect(() => {
-    setPath(location.pathname)
+    setPath(location.pathname);
   }, [location.pathname]);
 
   const appStyle = {
@@ -78,25 +78,25 @@ const SiderNav = () => {
                 Dashboard <Link to="/manager/dashboard" />
               </Menu.Item>
             )}
-
-            <Menu.Item
-              style={{
-                fontWeight: "600",
-                display: "flex",
-                alignItems: "center",
-                width: "fit-content",
-              }}
-              key="user"
-              icon={
-                <FaUserFriends
-                  style={{ fontSize: "17px", marginRight: "7px" }}
-                />
-              }
-            >
-              {" "}
-              User Manager <Link to="/manager/user/list" />
-            </Menu.Item>
-
+            {localStorage.getItem("roleAccess")?.split(",").includes("1") && (
+              <Menu.Item
+                style={{
+                  fontWeight: "600",
+                  display: "flex",
+                  alignItems: "center",
+                  width: "fit-content",
+                }}
+                key="user"
+                icon={
+                  <FaUserFriends
+                    style={{ fontSize: "17px", marginRight: "7px" }}
+                  />
+                }
+              >
+                {" "}
+                User Manager <Link to="/manager/user/list" />
+              </Menu.Item>
+            )}
             {localStorage.getItem("roleAccess")?.split(",").includes("9") && (
               <Menu.Item
                 style={{
