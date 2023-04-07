@@ -80,10 +80,11 @@ const RoleEdit = () => {
 
 
     const onFinish = async (values) => {
+        values.roleid = id;
         console.log(values);
         setLoading(true)
         try {
-            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/role-edit', values, {
+            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/update-role', values, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                 }
