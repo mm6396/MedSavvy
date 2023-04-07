@@ -187,12 +187,12 @@ const RoleList = () => {
         <div className="table-icons" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
           {/* {localStorage.getItem('role')?.split(',').includes('2') && */}
           <Tooltip title="Edit">
-            <FaUserEdit className="table-icon edit " onClick={() => { history.push(`/manager/role/edit/${record.key}`) }} />
+            <FaUserEdit className="table-icon edit " onClick={() => { history.push(`/manager/role/edit/${record.id}`) }} />
           </Tooltip>
           {/* } */}
           {/* {localStorage.getItem('role')?.split(',').includes('4') && */}
           <Tooltip title="Delete">
-            <DeleteFilled className="table-icon  delete" onClick={() => deleteRole(record.key)} />
+            <DeleteFilled className="table-icon  delete" onClick={() => deleteRole(record.id)} />
           </Tooltip>
           {/* } */}
         </div>

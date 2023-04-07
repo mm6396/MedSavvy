@@ -144,13 +144,13 @@ const SiderNav = () => {
                 }}
                 key="survey_manager"
                 icon={
-                  <GrDocumentUser
+                  <FaPeopleArrows
                     style={{ fontSize: "17px", marginRight: "7px" }}
                   />
                 }
               >
                 {" "}
-                Survey Manager <Link to="/manager/user/list" />
+                Survey Manager <Link to="/manager/survey/view" />
               </Menu.Item>
             )}
 
