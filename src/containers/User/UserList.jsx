@@ -104,15 +104,19 @@ const UserList = () => {
                     }
                 });
                 console.log(data);
-                let users = data.data.map((v,i)=> {
+                const temp_users = data.data.filter(v => v.id != parseInt(localStorage.getItem('user_id')));
+                let users = temp_users.map((v,i)=> {
                     return {
                         ...v,
                         key: i+1
                     }
                 })
+                console.log(users);
+
                 setDataSet(users);
                 setdata(users);
                 setLoading(false);
+                
             } catch (error) {
                 if (error?.response?.data?.message) {
                     ErrorHandler(error?.response?.data?.message, history);
@@ -132,7 +136,7 @@ const UserList = () => {
             fixed: "left",
         },
         {
-            title: "User Name",
+            title: "Name",
             dataIndex: "name",
             key: "name",
             fixed: "left",
@@ -140,6 +144,18 @@ const UserList = () => {
         {
             title: "User Role",
             dataIndex: "role_name",
+            key: "name",
+            fixed: "left",
+        },
+        {
+            title: "Position",
+            dataIndex: "position",
+            key: "name",
+            fixed: "left",
+        },
+        {
+            title: "Username",
+            dataIndex: "username",
             key: "name",
             fixed: "left",
         },
