@@ -2,19 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
 import { FaEdit, FaUserCheck } from 'react-icons/fa';
 import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
-import { EyeOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, DownOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { IoMdSettings } from 'react-icons/io';
-import { GiMatchHead } from 'react-icons/gi';
-import { GrCluster, GrTarget } from 'react-icons/gr';
 import FuzzySearch from 'fuzzy-search';
 import notification from "../../util/Notification/Notification";
-import { CampaignManagerAPI } from '../../util/ApiGateway/Api';
 import ErrorHandler from '../../util/ErrorHandler/ErrorHandler'
 
 import './User.scss';
 import axios from 'axios';
-import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -63,7 +58,7 @@ const UserList = () => {
             cancelText: 'No',
             onOk: async () => {
                 try {
-                    await axios.patch(`http://localhost:8001/api/v1/userRouter/delete-user`, {id},{
+                    await axios.patch(`http://localhost:8001/api/v1/userRouter/delete-user`, { id }, {
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                         }
@@ -94,6 +89,8 @@ const UserList = () => {
 
 
     useEffect(() => {
+        const cancelToken = axios.CancelToken;
+        const source = cancelToken.source();
         (async () => {
             try {
                 setLoading(true);
@@ -101,17 +98,17 @@ const UserList = () => {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem("accessToken")
 
-                    }
+                    },
+                    cancelToken: source.token
                 });
                 console.log(data);
                 const temp_users = data.data.filter(v => v.id != parseInt(localStorage.getItem('user_id')));
                 let users = temp_users.map((v,i)=> {
                     return {
                         ...v,
-                        key: i+1
+                        key: i + 1
                     }
                 })
-                console.log(users);
 
                 setDataSet(users);
                 setdata(users);
@@ -197,9 +194,9 @@ const UserList = () => {
                         <FaEdit className=" table-icon edit "
                             onClick={(e) => {
                                 history.push({
-									pathname: '/manager/user/update/' + record.id,
-									state: record
-								});
+                                    pathname: '/manager/user/update/' + record.id,
+                                    state: record
+                                });
                             }}
                             key={record.id}
                         />
@@ -226,11 +223,20 @@ const UserList = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const searcher = new FuzzySearch(dataSet, ['name', 'username', 'role_name','position'], { sort: true });
+    const searcher = new FuzzySearch(dataSet, ['name', 'username', 'role_name', 'position'], { sort: true });
 
     const handleSearch = (value) => {
         if (value) {
             const result = searcher.search(value);
+            setdata([...result]);
+        } else {
+            setdata(dataSet);
+        }
+    }
+
+    const handleChange = (e) => {
+        if (e.target.value) {
+            const result = searcher.search(e.target.value);
             setdata([...result]);
         } else {
             setdata(dataSet);
@@ -245,6 +251,7 @@ const UserList = () => {
                         placeholder="input search text"
                         enterButton="Search"
                         onSearch={handleSearch}
+                        onChange={handleChange}
                     />
                 </Col>
             </Row>
@@ -253,7 +260,7 @@ const UserList = () => {
                 columns={columns}
                 dataSource={data}
                 loading={loading}
-                // scroll={{ x: 1000 }}
+            // scroll={{ x: 1000 }}
             />
         </div>
     );

@@ -6,10 +6,9 @@ import DashboardLayout from './DashboardLayout/DashboardLayout';
 import CampaignLayout from './CampaignLayout/CampaignLayout';
 import SiderNav from '../../components/common/SiderNav/SiderNav';
 
-import CampaignAccessRoute from '../../RouteProtection/ViewAccessprotection/CampaignAccessRoute';
-
 import PageNotFound from '../../util/PageNotFound/PageNotFound';
 import UserManagerLayout from './UserManagerLayout';
+import RoleManagerLayout from './RoleManagerLayout/RoleManagerLayout';
 
 const ManagerLayout = () => {
 
@@ -39,11 +38,11 @@ const ManagerLayout = () => {
                     <Switch>
                         {/* <Route path="/manager/profile" component={ProfileLayout} />
                         <UserAccessRoute path="/manager/user" component={UserManagerLayout} />
-                        <RoleAccessRoute path="/manager/role" component={RoleManagerLayout} />
                         <FFAccessRoute path="/manager/field-force" component={FFLayout} /> */}
                         <Route path="/manager/campaign" component={CampaignLayout} />
                         <Route path="/manager/dashboard" component={DashboardLayout} />
                         <Route path="/manager/user" component={UserManagerLayout} />
+                        <Route path="/manager/role" component={RoleManagerLayout} />
                         {/* <Route path="/manager/report-manager" component={ReportManagerLayout} />
                         <Route path="/manager/audience-manager" component={AudienceManagerLayout} />
                         <Route path="/manager/location-manager" component={LocationManagerLayout} />

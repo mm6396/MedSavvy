@@ -8,6 +8,7 @@ import './RoleList.scss';
 import notification from "../../../util/Notification/Notification";
 import ErrorHandler from "../../../util/ErrorHandler/ErrorHandler";
 import { RoleManagerAPI } from '../../../util/ApiGateway/Api';
+import axios from 'axios';
 
 const { confirm } = Modal;
 const { Search } = Input;
@@ -17,7 +18,7 @@ const RoleList = () => {
 
   useEffect(() => {
 
-    document.title = 'Prism CRM Role List';
+    document.title = 'Medsavvy Role List';
     window.scrollTo(0, 0);
 
   }, []);
@@ -25,12 +26,8 @@ const RoleList = () => {
   let history = useHistory();
 
   const [loading, setLoading] = useState(false);
-  const [roleLoading, setRoleLoading] = useState(false);
-
   const [data, setData] = useState([]);
   const [dataSet, setDataSet] = useState([]);
-
-  const [description, setDescription] = useState();
 
 
   // console.log(data);
@@ -108,30 +105,29 @@ const RoleList = () => {
   };
 
   useEffect(() => {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
     (async () => {
       try {
-        setRoleLoading(true);
-        const { data } = await RoleManagerAPI.get('/get-role-list', {
+        setLoading(true);
+        const { data } = await axios.get('http://localhost:8001/api/v1/userRouter/roleList', {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-          }
+
+          },
+          cancelToken: source.token
         });
-
-        console.log('data', data);
-
-        let value = data.response.map((v, i) => {
+        console.log(data);
+        let users = data?.data.map((v, i) => {
           return {
-            key: v.id,
-            id: i + 1,
-            name: v.name,
-            status: v.active_status === null ? false : v.active_status,
-            type: v.is_ff ? "Field Force" : "Management",
-            description: v.description
+            ...v,
+            key: i + 1
           }
-        });
-        setDataSet([...value]);
-        setData([...value]);
-        setRoleLoading(false);
+        })
+
+        setDataSet(users);
+        setData(users);
+        setLoading(false);
       } catch (error) {
         if (error?.response?.data?.message) {
           ErrorHandler(error?.response?.data?.message, history);
@@ -143,28 +139,11 @@ const RoleList = () => {
     })();
   }, []);
 
-  const [visible, setVisible] = useState(false);
-  const showModal = (des) => {
-    setVisible(true)
-    setDescription(des)
-
-  };
-
-  const handleOk = e => {
-    console.log(e);
-    setVisible(false)
-  };
-
-  const handleCancel = e => {
-    console.log(e);
-    setVisible(false)
-  };
-
   const columns = [
 
     {
       title: 'Sn',
-      dataIndex: 'id',
+      dataIndex: 'key',
       key: 'id',
       width: 100,
       fixed: 'left',
@@ -172,7 +151,7 @@ const RoleList = () => {
 
     {
       title: 'Role Name',
-      dataIndex: 'name',
+      dataIndex: 'role_name',
       key: 'name',
       // filters: filteroption,
       // filterMultiple: true,
@@ -180,56 +159,49 @@ const RoleList = () => {
 
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
+      title: 'Role Description',
+      dataIndex: 'role_description',
       key: 'type',
 
     },
-    {
-      title: <div> Description (Click to view full) </div>,
-      dataIndex: 'description',
-      key: 'description',
-      width: '25%',
-      render: (_, record) =>
-      <Tooltip title="View full Description">
-        <div   style={{ display: 'flex', justifyContent: 'center' }}>
-          <div className="view-description" onClick={_ => showModal(record.description)}> {record.description} </div>
-        </div>
-      </Tooltip>,
+    // {
+    //   title: 'Page Access',
+    //   dataIndex: 'page_access',
+    //   key: 'type',
 
-    },
-    {
-      title: 'Status',
-      render: (text, record) => (
-        <Space size="middle">
-          {localStorage.getItem('role')?.split(',').includes('3') &&
-            <Switch size="small" loading={loading} defaultChecked={record.status} checked={data[data.findIndex(obj => obj.key == record.key)].status} onChange={(checked) => onStatusChnage(checked, record)} />
-          }
-        </Space>
-      ),
-    },
+    // },
+    // {
+    //   title: 'Status',
+    //   render: (text, record) => (
+    //     <Space size="middle">
+    //       {localStorage.getItem('role')?.split(',').includes('3') &&
+    //         <Switch size="small" loading={loading} defaultChecked={record.status} checked={data[data.findIndex(obj => obj.key == record.key)].status} onChange={(checked) => onStatusChnage(checked, record)} />
+    //       }
+    //     </Space>
+    //   ),
+    // },
 
     {
       title: 'Action',
       render: (text, record) => (
-        <Space size="middle">
-          {localStorage.getItem('role')?.split(',').includes('2') &&
-            <Tooltip title="Edit">
-              <FaUserEdit className="action-icon edit " onClick={() => { history.push(`/manager/role/edit/${record.key}`) }} />
-            </Tooltip>
-          }
-          {localStorage.getItem('role')?.split(',').includes('4') &&
-            <Tooltip title="Delete">
-              <DeleteFilled className="action-icon  delete" onClick={() => deleteRole(record.key)} />
-            </Tooltip>
-          }
-        </Space>
+        <div className="table-icons" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+          {/* {localStorage.getItem('role')?.split(',').includes('2') && */}
+          <Tooltip title="Edit">
+            <FaUserEdit className="table-icon edit " onClick={() => { history.push(`/manager/role/edit/${record.key}`) }} />
+          </Tooltip>
+          {/* } */}
+          {/* {localStorage.getItem('role')?.split(',').includes('4') && */}
+          <Tooltip title="Delete">
+            <DeleteFilled className="table-icon  delete" onClick={() => deleteRole(record.key)} />
+          </Tooltip>
+          {/* } */}
+        </div>
       ),
     },
 
   ];
 
-  const searcher = new FuzzySearch(dataSet, ['name', 'type'], { sort: true });
+  const searcher = new FuzzySearch(dataSet, ['role_name', 'type'], { sort: true });
 
   const handleSearch = (value) => {
     if (value) {
@@ -260,17 +232,23 @@ const RoleList = () => {
           />
         </Col>
       </Row>
-      <Spin spinning={roleLoading}>
-        <Table columns={columns} dataSource={data} scroll={{ x: 1000 }} pagination={{ defaultPageSize: 20, showSizeChanger: data.length > 100 ? true : false, pageSizeOptions: ['10', '20', '30'] }} />
+      <Spin spinning={loading}>
+        <Table
+          className="campaignlist-table"
+          columns={columns}
+          dataSource={data}
+        // scroll={{ x: 1000 }} 
+        // pagination={{ defaultPageSize: 20, showSizeChanger: data.length > 100 ? true : false, pageSizeOptions: ['10', '20', '30'] }} 
+        />
       </Spin>
-      <Modal
+      {/* <Modal
         title="Description"
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <div style={{ fontWeight: '600' }}> {description} </div>
-      </Modal>
+      </Modal> */}
 
     </div>
   );

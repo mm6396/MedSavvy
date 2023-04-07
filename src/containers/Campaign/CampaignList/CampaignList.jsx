@@ -90,12 +90,6 @@ const CampaignList = () => {
         });
     };
 
-    const resizeObserver = new ResizeObserver(entries => {
-        window.requestAnimationFrame(() => {
-            // ...your code here
-        });
-    });
-
     useEffect(() => {
         const cancelToken = axios.CancelToken;
         const source = cancelToken.source();
@@ -110,10 +104,10 @@ const CampaignList = () => {
                     cancelToken: source.token
                 });
                 console.log(data);
-                let users = data.data.map((v,i)=> {
+                let users = data.data.map((v, i) => {
                     return {
                         ...v,
-                        key: i+1
+                        key: i + 1
                     }
                 })
                 setDataSet(users);
@@ -134,84 +128,84 @@ const CampaignList = () => {
     }, []);
 
     const columns = [
-      {
-        title: "Sn.",
-        dataIndex: "key",
-        key: "user_id",
-        fixed: "left",
-      },
-      {
-        title: "Campaign Name",
-        dataIndex: "camp_name",
-        key: "name",
-        fixed: "left",
-      },
-      {
-        title: "Campaign Type",
-        dataIndex: "type_name",
-        key: "name",
-        fixed: "left",
-      },
-      {
-        title: "Survey Target",
-        dataIndex: "survey_target",
-        key: "name",
-        fixed: "left",
-      },
-      {
-        title: "Start Date",
-        dataIndex: "start_date",
-        key: "to_date",
-      },
-      {
-        title: "End Date",
-        dataIndex: "end_date",
-        key: "to_date",
-      },
-      {
-          title: 'Action',
-          dataIndex: 'stts',
-          render: (text, record) => (
-              <div className="table-icons" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-                  {/* {localStorage.getItem('campaign')?.split(',').includes('6') && */}
-                  <Tooltip title="Create Questions" >
-						<EditOutlined className=" table-icon edit "
-							onClick={(e) => {
-								console.log(record);
-								history.push({
-									pathname: '/manager/campaign/create-question/' + record.id,
-									state: record.name
-								});
-							}}
-							key={record.id}
-						/>
-					</Tooltip>
-                  {/* }
+        {
+            title: "Sn.",
+            dataIndex: "key",
+            key: "user_id",
+            fixed: "left",
+        },
+        {
+            title: "Campaign Name",
+            dataIndex: "camp_name",
+            key: "name",
+            fixed: "left",
+        },
+        {
+            title: "Campaign Type",
+            dataIndex: "type_name",
+            key: "name",
+            fixed: "left",
+        },
+        {
+            title: "Survey Target",
+            dataIndex: "survey_target",
+            key: "name",
+            fixed: "left",
+        },
+        {
+            title: "Start Date",
+            dataIndex: "start_date",
+            key: "to_date",
+        },
+        {
+            title: "End Date",
+            dataIndex: "end_date",
+            key: "to_date",
+        },
+        {
+            title: 'Action',
+            dataIndex: 'stts',
+            render: (text, record) => (
+                <div className="table-icons" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+                    {/* {localStorage.getItem('campaign')?.split(',').includes('6') && */}
+                    <Tooltip title="Create Questions" >
+                        <EditOutlined className=" table-icon edit "
+                            onClick={(e) => {
+                                console.log(record);
+                                history.push({
+                                    pathname: '/manager/campaign/create-question/' + record.id,
+                                    state: record.name
+                                });
+                            }}
+                            key={record.id}
+                        />
+                    </Tooltip>
+                    {/* }
                   {localStorage.getItem('campaign')?.split(',').includes('2') && */}
-                      <Tooltip title="Edit" >
-                          <FaEdit className=" table-icon edit "
-                              onClick={(e) => {
-                                  history.push({
-                                      pathname: '/manager/campaign/update/' + record.key,
-                                  });
-                              }}
-                              key={record.key}
-                          />
-                      </Tooltip>
-                  {/* }
+                    <Tooltip title="Edit" >
+                        <FaEdit className=" table-icon edit "
+                            onClick={(e) => {
+                                history.push({
+                                    pathname: '/manager/campaign/update/' + record.key,
+                                });
+                            }}
+                            key={record.key}
+                        />
+                    </Tooltip>
+                    {/* }
 
                   {localStorage.getItem('campaign')?.split(',').includes('4') && */}
-                      <Tooltip title="Delete" >
-                          <RiDeleteBinLine className=" table-icon  delete"
-                              onClick={(e) => { deleteCampaign(record.key) }}
-                              key={record.key}
-                          />
-                      </Tooltip>
-                  {/* } */}
+                    <Tooltip title="Delete" >
+                        <RiDeleteBinLine className=" table-icon  delete"
+                            onClick={(e) => { deleteCampaign(record.key) }}
+                            key={record.key}
+                        />
+                    </Tooltip>
+                    {/* } */}
 
-              </div>
-          ),
-      },
+                </div>
+            ),
+        },
     ];
 
     useEffect(() => {
@@ -220,7 +214,7 @@ const CampaignList = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const searcher = new FuzzySearch(dataSet, ['camp_name', 'start_date','end_date'], { sort: true });
+    const searcher = new FuzzySearch(dataSet, ['camp_name', 'start_date', 'end_date'], { sort: true });
 
     const handleSearch = (value) => {
         if (value) {
@@ -231,25 +225,35 @@ const CampaignList = () => {
         }
     }
 
+    const handleChange = (e) => {
+        if (e.target.value) {
+            const result = searcher.search(e.target.value);
+            setdata([...result]);
+        } else {
+            setdata(dataSet);
+        }
+    }
+
     return (
-      <div>
-        <Row style={{ marginBottom: "1%" }}>
-          <Col xl={8} xs={24}>
-            <Search
-              placeholder="input search text"
-              enterButton="Search"
-              onSearch={handleSearch}
+        <div>
+            <Row style={{ marginBottom: "1%" }}>
+                <Col xl={8} xs={24}>
+                    <Search
+                        placeholder="input search text"
+                        enterButton="Search"
+                        onSearch={handleSearch}
+                        onChange={handleChange}
+                    />
+                </Col>
+            </Row>
+            <Table
+                className="campaignlist-table"
+                columns={columns}
+                dataSource={data}
+                loading={loading}
+            //   scroll={{ x: 1000 }}
             />
-          </Col>
-        </Row>
-        <Table
-          className="campaignlist-table"
-          columns={columns}
-          dataSource={data}
-          loading={loading}
-        //   scroll={{ x: 1000 }}
-        />
-      </div>
+        </div>
     );
 }
 

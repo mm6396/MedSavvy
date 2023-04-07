@@ -11,8 +11,8 @@ import PageNotFound from '../util/PageNotFound/PageNotFound';
 
 export default [
     <Route exact path="/manager/role/list" component={RoleList} key={1} />,
-    <RoleCreateAccess exact path="/manager/role/create" component={RoleCreate} key={2} />,
-    <RoleUpdateAccess exact path="/manager/role/edit/:id" component={RoleEdit} key={3} />,
-    <Route exact path="/manager/role" render={() => <Redirect to="/manager/role/list" />} key={5} />,
+    <Route exact path="/manager/role/create" component={RoleCreate} key={2} />,
+    <Route exact path="/manager/role/edit/:id" component={RoleEdit} key={3} />,
+    // <Route exact path="/manager/role" render={() => <Redirect to="/manager/role/list" />} key={5} />,
     <Route path="/manager/role" render={() => <PageNotFound/>} key={6} />
 ];
