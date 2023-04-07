@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import './SiderNav.scss';
 import { FaUserTag, FaUserShield, FaUserCog, FaLocationArrow, FaPeopleArrows, FaUsers, FaPhoneSquare } from 'react-icons/fa';
+import { GrDocumentUser } from "react-icons/gr";
 import { RiHomeHeartFill, RiFileUserFill, RiBarChartBoxFill } from 'react-icons/ri';
 import { AiFillNotification } from 'react-icons/ai';
 
@@ -50,6 +51,7 @@ const SiderNav = () => {
                                 Role Manager <Link to="/manager/role" />
                             </Menu.Item>
                         }
+
                         {localStorage.getItem('ff')?.split(',').includes('5') &&
                             <Menu.Item className="manager-menu" key="field-force"  >
                                 <div className="menu-icon"> <FaUserCog />  </div>
@@ -62,6 +64,11 @@ const SiderNav = () => {
                             icon={<FaPeopleArrows style={{ fontSize: '17px', marginRight: '7px' }} />}  >  Campaign <Link to="/manager/campaign/list" />
                         </Menu.Item>
                         {/* } */}
+
+                        <Menu.Item style={{ fontWeight: '600', display: 'flex', alignItems: 'center', width: 'fit-content' }} key="survey_manager"
+                            icon={<GrDocumentUser style={{ fontSize: '17px', marginRight: '7px' }} />}  > Survey Manager <Link to="/manager/user/list" />
+                        </Menu.Item>
+
                         {localStorage.getItem('report')?.split(',').includes('5') &&
                             <Menu.Item className="manager-menu" key="report-manager"  >
                                 <div className="menu-icon"> <RiFileUserFill />  </div>
