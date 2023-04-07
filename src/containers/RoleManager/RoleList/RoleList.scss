@@ -1,119 +1,80 @@
-.rolelist-div{
-    .action-icon{
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        color: #CCCCCC;
-        cursor: pointer;
-        transition: .3s all linear;
+.ant-dropdown-menu-item {
+    font-size: 12px !important;
+}
+
+.table-icons{
+    .assign:hover{
+         color: #00B1EB;   
+    }
+    .suggest:hover{
+      color: green;
+    }
+    .view:hover{
+        color: #00B1EB;
     }
     .edit:hover{
         color: green;
     }
-    
     .delete:hover{
         color: #E72582;
     }
-
-    table{
-        thead{
-            tr{
-                th{
-                    background-color: #004F9F;
-                    color: white;
-                    font-weight: 600;
-                    border: 1px solid rgba(255,255,255, .5);
-                    text-align: center;
-
-                    // .ant-table-filter-column-title{
-
-                    //         padding: 5px 0 0 1em;
-
-                    //     .ant-table-column-sorters-with-tooltip{
-                    //         background-color: #004F9F;
-                    //     }
-                    //     .ant-tooltip-open{
-                    //         background-color: #004F9F;
-                    //     }
-                    // }
-                }
-            }
-        }
-
-        tbody{
-            tr{
-                td{
-                    font-weight: 600;
-                    text-align: center;
-
-                    .ant-switch{
-                        transform: rotate(0deg);
-
-                        .ant-switch-handle{
-                            left: calc(100% - 24px - 2px);
-                        }
-                    }
-
-                    .ant-switch-checked{
-                        background-color: #AFCA0B;
-                        transform: rotate(180deg);
-                    }
-                    .view-description{
-                        overflow: hidden; 
-                        text-overflow: ellipsis; 
-                        white-space: nowrap; 
-                        // width: 6rem; 
-                        cursor: pointer;
-                        transition: .2s;
-                    }
-                    .view-description:hover{
-                        color: #004F9F;
-                    }
-                }
-            }
-        }
+    .admin-settings:hover{
+        color: #004F9F;
     }
-
 }
+.campaignlist-table{
+  margin-top: 20px;
+  thead{
+      tr{
+          th{
+              text-align: center;
+              background-color: #00ab55;
+              color: white;
+              border-right: 1px solid white;
+          }
+      }
+  }
 
-// .ant-modal-mask{
-//     background-color: transparent !important;
-// }
-// .ant-modal-wrap{
-//     top: 145px;
-//     .ant-modal-content{
-//             width: 46rem;
-//     .ant-modal-close-x{
-//         color: white;
-//     }
-//     .ant-modal-header{
-//         background-color: #004F9F;
-//         border: 1px solid white;
-//         .ant-modal-title{
-//             color: white;
-//             font-weight: 600;
+  tbody{
+      tr{
+          td{
+              font-weight: 500;
+              text-align: center;
 
-//         }    
-//     }
-//     .ant-modal-body{    
-//             // width: 46rem;
-//     }
-//     .ant-modal-footer{
-//         .ant-btn-primary{
-//             background-color: #004F9F;
-//             border-color: #004F9F;
-//         }
-//     }
-        
-//     }
-// }
-
-@media(max-width: 500px){
-    .ant-modal-wrap{
-        // top: 145px;
-        .ant-modal-content{
-                width: 20rem;
-            
-        }
-    }   
+              .table-icons{
+                  .table-icon{
+                      color: #CCCCCC;
+                      margin-left: 10% ;
+                      font-size: 15px;
+                      cursor: pointer;
+                      transition: .2s all linear;
+                  }
+                  .assign:hover{
+                       color: #00B1EB;   
+                  }
+                  .suggest:hover{
+                    color: green;
+                  }
+                  .view:hover{
+                      color: #00B1EB;
+                  }
+                  .edit:hover{
+                      color: green;
+                  }
+                  .delete:hover{
+                      color: #E72582;
+                  }
+                  .admin-settings:hover{
+                      color: #004F9F;
+                  }
+              }
+          }
+      }
+  }
+}
+.ant-popover-placement-top{
+  .ant-popover-title{
+    font-weight: 600;
+    text-align: center;
+  }
 }

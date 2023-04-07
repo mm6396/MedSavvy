@@ -22,9 +22,9 @@ const RoleManagerMenu = () => {
             <Menu theme="dark" breakpoint="lg" collapsedWidth="0" mode="horizontal" overflowedIndicator={<DownCircleOutlined style={{ fontSize: "1.2rem", color: "white" }} />} selectedKeys={[path]}>
 
                 <Menu.Item key="/manager/role/list" icon={<UnorderedListOutlined />}  >Role List <Link to="/manager/role/list" /></Menu.Item>
-                {localStorage.getItem('role')?.split(',').includes('1') &&
+                {/* {localStorage.getItem('role')?.split(',').includes('1') && */}
                     <Menu.Item key="/manager/role/create" icon={<PlusCircleOutlined />}  >Role Creation <Link to="/manager/role/create" /></Menu.Item>
-                }
+                {/* } */}
                 {/* {localStorage.getItem('location')?.split(',').includes('1') &&
                     <Menu.Item key="/manager/role/location-area" icon={<EnvironmentFilled />}  > Location Manager <Link to="/manager/role/location-area" /></Menu.Item>
                 } */}

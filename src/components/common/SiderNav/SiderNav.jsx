@@ -4,7 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import './SiderNav.scss';
-import { FaUserTag, FaUserShield, FaUserCog, FaLocationArrow, FaPeopleArrows, FaUsers, FaPhoneSquare } from 'react-icons/fa';
+import { FaUserTag, FaUserFriends, FaUserCog, FaLocationArrow, FaPeopleArrows, FaUsers, FaPhoneSquare } from 'react-icons/fa';
 import { RiHomeHeartFill, RiFileUserFill, RiBarChartBoxFill } from 'react-icons/ri';
 import { AiFillNotification } from 'react-icons/ai';
 
@@ -35,7 +35,7 @@ const SiderNav = () => {
                             icon={<RiHomeHeartFill style={{ fontSize: '17px', marginRight: '7px' }} />}  > Dashboard <Link to="/manager/dashboard" />
                         </Menu.Item>
                         <Menu.Item style={{ fontWeight: '600', display: 'flex', alignItems: 'center', width: 'fit-content' }} key="user"
-                            icon={<FaUserTag style={{ fontSize: '17px', marginRight: '7px' }} />}  >  User Manager <Link to="/manager/user/list" />
+                            icon={<FaUserFriends style={{ fontSize: '17px', marginRight: '7px' }} />}  >  User Manager <Link to="/manager/user/list" />
                         </Menu.Item>
                         
                         {localStorage.getItem('user')?.split(',').includes('5') &&
@@ -44,12 +44,12 @@ const SiderNav = () => {
                                 User Manager <Link to="/manager/user" />
                             </Menu.Item>
                         }
-                        {localStorage.getItem('role')?.split(',').includes('5') && localStorage.getItem('sysadmin')?.split(',').includes('1') &&
-                            <Menu.Item className="manager-menu" key="role"  >
-                                <div className="menu-icon"> <FaUserShield />  </div>
-                                Role Manager <Link to="/manager/role" />
+                        {/* {localStorage.getItem('role')?.split(',').includes('5') && localStorage.getItem('sysadmin')?.split(',').includes('1') && */}
+                            <Menu.Item style={{ fontWeight: '600', display: 'flex', alignItems: 'center', width: 'fit-content' }} key="role" 
+                                icon = {<FaUserCog style={{ fontSize: '17px', marginRight: '7px' }}/> } >
+                                Role Manager <Link to="/manager/role/list" />
                             </Menu.Item>
-                        }
+                        {/* } */}
                         {localStorage.getItem('ff')?.split(',').includes('5') &&
                             <Menu.Item className="manager-menu" key="field-force"  >
                                 <div className="menu-icon"> <FaUserCog />  </div>
