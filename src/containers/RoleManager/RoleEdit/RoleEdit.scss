@@ -1,25 +1,21 @@
 .rolecreate-div{
+    .ant-row{
+        .ant-col{
+            .add-btn{
+                background-color: #00ab55;
+                color: white;
+            }
+            .add-btn:hover{
+                background-color: #00ab55;
+            }
 
-        .ant-row{
-            .ant-col{
-                .add-btn{
-                    background-color: #00ab55;
-                    color: white;
-                }
-                .add-btn:hover{
-                    background-color: #00ab55;
-                }
-    
-                .save-btn{
-                    background-color: #00ab55;
-                    color: white;
-                }
-                .save-btn:hover{
-                    background-color: #00ab55;
-                }
+            .save-btn{
+                background-color: #00ab55;
+                color: white;
+            }
+            .save-btn:hover{
+                background-color: #00ab55;
             }
         }
     }
-.ant-select-selection-item-content {
-    text-transform: capitalize;
 }

@@ -2,19 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
 import { FaEdit, FaUserCheck } from 'react-icons/fa';
 import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
-import { EyeOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, DownOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { IoMdSettings } from 'react-icons/io';
-import { GiMatchHead } from 'react-icons/gi';
-import { GrCluster, GrTarget } from 'react-icons/gr';
 import FuzzySearch from 'fuzzy-search';
 import notification from "../../util/Notification/Notification";
-import { CampaignManagerAPI } from '../../util/ApiGateway/Api';
 import ErrorHandler from '../../util/ErrorHandler/ErrorHandler'
 
 import './User.scss';
 import axios from 'axios';
-import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 const { Search } = Input;
 const { confirm } = Modal;

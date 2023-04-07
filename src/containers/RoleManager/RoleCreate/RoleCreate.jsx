@@ -33,7 +33,7 @@ const RoleCreate = () => {
                         Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                     }
                 });
-                setAccesses(data.accesses);
+                setAccesses(data?.data);
 
             } catch (error) {
                 if (error?.response?.data?.message) {
@@ -72,14 +72,14 @@ const RoleCreate = () => {
         console.log(values);
         setLoading(true)
         try {
-            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/create', values, {
+            const { data } = await axios.post('http://localhost:8001/api/v1/userRouter/role-create', values, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                 }
             });
             notification('Successful', `New user Created successfully`, 'success');
-            setLoading(false)
-            history.push('list')
+            setLoading(false);
+            history.push('/manager/role/list');
 
         } catch (error) {
             setLoading(false);
@@ -106,7 +106,6 @@ const RoleCreate = () => {
             >
 
                 <Row>
-
                     <Col xs={{ span: 12, offset: 0 }} lg={{ span: 11, offset: 0 }}>
                         <h5 className='required' style={{ fontWeight: 'bold', color: '#004F9F', fontSize: '13px' }}>
                             Role Name
@@ -123,10 +122,17 @@ const RoleCreate = () => {
                             <Input placeholder="Type here" />
 
                         </Form.Item>
-                        <Form.Item name="isFF" valuePropName="checked">
+                        {/* <Form.Item name="isFF" valuePropName="checked">
                             <Checkbox style={{ fontWeight: 'bold', color: '#004F9F', fontSize: '13px' }}>Surevy Conductor</Checkbox>
+                        </Form.Item> */}
+
+                        <h5 style={{ fontWeight: 'bold', color: '#004F9F', fontSize: '13px' }}> Description </h5>
+
+                        <Form.Item name="role_description" >
+                            <Input.TextArea rows="5" placeholder="Type here" />
                         </Form.Item>
                     </Col>
+
                     <Col xs={{ span: 12, offset: 1 }} lg={{ span: 12, offset: 1 }}>
                         <h5 className="required" style={{ fontWeight: '600', color: '#004F9F', fontSize: '12px' }}> Permission for Views</h5>
                         <Form.Item name="permission_page" rules={[{ required: true, message: 'Please select typpe!' }]}>
@@ -149,16 +155,6 @@ const RoleCreate = () => {
                         </Form.Item>
                     </Col>
 
-                </Row>
-
-                <Row>
-                    <Col xs={{ span: 24, offset: 0 }} lg={{ span: 12, offset: 0 }}>
-                        <h5 style={{ fontWeight: 'bold', color: '#004F9F', fontSize: '13px' }}> Description </h5>
-
-                        <Form.Item name="role_description" >
-                            <Input.TextArea rows="7" placeholder="Type here" />
-                        </Form.Item>
-                    </Col>
                 </Row>
                 <Row justify={'center'} className="button-row" style={{ margin: '50px 0 0 0', padding: '24px 0 0 0' }}>
                     <Col >
