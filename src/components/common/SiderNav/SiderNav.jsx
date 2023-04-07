@@ -4,7 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import './SiderNav.scss';
-import { FaUserTag, FaUserShield, FaUserCog, FaLocationArrow, FaPeopleArrows, FaUsers, FaPhoneSquare } from 'react-icons/fa';
+import { FaUserTag, FaUserFriends, FaUserCog, FaLocationArrow, FaPeopleArrows, FaUsers, FaPhoneSquare } from 'react-icons/fa';
 import { GrDocumentUser } from "react-icons/gr";
 import { RiHomeHeartFill, RiFileUserFill, RiBarChartBoxFill } from 'react-icons/ri';
 import { AiFillNotification } from 'react-icons/ai';
