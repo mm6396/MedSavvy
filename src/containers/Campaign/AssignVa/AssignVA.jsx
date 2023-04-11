@@ -43,51 +43,32 @@ const AssignVA = () => {
   const fetchVaList = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:8001/api/v1/campaignRouter/spList",
-        { campaign_id: id },
+      const { data } = await axios.get(
+        "http://localhost:8001/api/v1/userRouter/userList",
+        
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
           },
         }
       );
-      let list = [...data.valist].map((el) => {
-        return {
-          ...el,
-          key: el.id,
-        };
-      });
+      console.log(data)
+      let list = data?.data.filter(el => el.role_id == 2 );
+      console.log(list)
       setData(list);
-      const va_list = [...data.va_sup_list].map((el) => {
-        return {
-          ...el,
-          key: el.id,
-        };
-      });
-      setVaData(va_list);
-      setAddVaList(data.assigned_list);
-      setAddedVa(data.assigned_list);
-      setAssignedList(data.assigned_list);
+  
+      // setAddVaList(data.assigned_list);
+      // setAddedVa(data.assigned_list);
+      // setAssignedList(data.assigned_list);
       // const existingVA = data.assigned_list.map(
       //   (addedPerson) => addedPerson.id
       // );
-      let vaListData = data.assigned_list.filter(o1 => data.valist.some(o2 => o1.id === o2.id));
-      let va_Sup_ListData = data.assigned_list.filter(o1 => data.va_sup_list.some(o2 => o1.id === o2.id));
-      const existingVA = vaListData.map((v,i)=>{
-        return v.id
-      })
-      // console.log("existingVA",existingVA)
+      // let vaListData = data.assigned_list.filter(o1 => data.valist.some(o2 => o1.id === o2.id));
+      // const existingVA = vaListData.map((v,i)=>{
+      //   return v.id
+      // })
 
-      const existingVA_SUP = va_Sup_ListData.map((v,i)=>{
-        return v.id
-      })
-      // console.log("existingVA_SUP",existingVA_SUP)
-
-
-      setSelectedVARowKeys([...existingVA]);
-      setSelectedVASUPRows([...existingVA_SUP]);
-      setSupVaList(va_list);
+      // setSelectedVARowKeys([...existingVA]);
       setVaList(list);
       setLoading(false);
     } catch (error) {
@@ -106,20 +87,20 @@ const AssignVA = () => {
 
   const columns = [
     {
-      title: "User ID",
-      dataIndex: "uid",
+      title: "Username",
+      dataIndex: "username",
       key: "uid",
       width: "30%",
     },
     {
       title: "Name",
-      dataIndex: "full_name",
+      dataIndex: "name",
       key: "full_name",
       width: "20%",
     },
     {
       title: "Role",
-      dataIndex: "role",
+      dataIndex: "role_name",
       key: "role",
       width: "20%",
     },
@@ -318,32 +299,6 @@ const AssignVA = () => {
     },
   };
 
-  const varowSelection = {
-    selectedRowKeys: selectedVASUPRows,
-    onChange: (selectedRowKeys) => {
-      // console.log("VA SUP rows",selectedRowKeys);
-      // console.log("VA  rows",selectedRowKeys);
-      setSelectedVASUPRows([...selectedRowKeys]);
-      // console.log("VA already added", addedVa);
-      const existingVA = addedVa.map((addedPerson) => addedPerson.id);
-      // console.log("existingVAinsup",existingVA)
-
-      const arr = selectedRowKeys.filter((val) => !existingVA.includes(val));
-      // console.log("VA SUP arr",arr);
-
-      const added_br = vaSupList.filter((val) => arr.includes(val.id));
-      const added_br2 = vaList.filter((val) => selectedVARowKeys.includes(val.id));
-      const added_br3 = vaSupList.filter((val) => selectedRowKeys.includes(val.id));
-      // console.log("added_br", added_br);
-      if(added_br.length > 0){
-        setAddedVa([...addedVa, ...added_br]);
-        setAddVaList([...addedVa, ...added_br]);
-      }else {
-        setAddedVa([...added_br3,...added_br2]);
-        setAddVaList([...added_br3,...added_br2]);
-      }
-    },
-  };
 
   const searcher = new FuzzySearch(data, ["uid"], { sort: true });
 
@@ -354,33 +309,6 @@ const AssignVA = () => {
       setVaList([...result]);
     } else {
       setVaList(data);
-    }
-  };
-
-  const vasearcher = new FuzzySearch(vadata, ["uid"], {
-    sort: true,
-  });
-
-  const handleVASearch = (e) => {
-    const value = e.target.value;
-    if (value) {
-      const result = vasearcher.search(value);
-      setSupVaList([...result]);
-    } else {
-      setSupVaList(vadata);
-    }
-  };
-  const addVAsearch = new FuzzySearch(addedVaList, ["uid"], {
-    sort: true,
-  });
-
-  const handleAddVASearch = (e) => {
-    const value = e.target.value;
-    if (value) {
-      const result = addVAsearch.search(value);
-      setAddedVa([...result]);
-    } else {
-      setAddedVa(addedVaList);
     }
   };
 
@@ -415,20 +343,6 @@ const AssignVA = () => {
             onChange={handleSearch}
           />
         </Col>
-        {/* <Col xl={{ span: 8, offset: 1 }} xs={8}>
-          <Search
-            placeholder="Search by uid ..."
-            enterButton="Search"
-            onChange={handleVASearch}
-          />
-        </Col>
-        <Col xl={{ span: 4, offset: 3 }} xs={6}>
-          <Search
-            placeholder="Search by uid "
-            enterButton="Search"
-            onChange={handleAddVASearch}
-          />
-        </Col> */}
       </Row>
       <Row className="valist-table">
         <Col xl={{ span: 16, offset: 0 }} xs={24}>
@@ -444,26 +358,13 @@ const AssignVA = () => {
             // size= 'small'
           />
         </Col>
-        {/* <Col xl={{ span: 8, offset: 1 }} xs={24}>
-          <Table
-            className="valist-table"
-            // rowClassName={(record, index) => record.assign_status == 566 || record.assign_status == 569 ? 'table-row-dark' : ''}
-            columns={columns}
-            dataSource={vaSupList}
-            loading={loading}
-            rowSelection={{
-              ...varowSelection,
-            }}
-            // size= 'small'
-          />
-        </Col> */}
         <Col xl={{ span: 6, offset: 1 }} xs={{ span: 24, offset: 0 }}>
           <Card 
-            title={`TOTAL( ${addedVa.length} )` }
+            title={`TOTAL( ${addedVa?.length} )` }
             style={{ width: "100%" }}
           >
             <div className="card-body-list">
-              {addedVa.map((va) => {
+              {addedVa?.map((va) => {
                 // console.log(va);
                 return (
                   <Row key={va.id} style={{ alignItems: "baseline" }}>
@@ -499,7 +400,7 @@ const AssignVA = () => {
             >
               <Button
                 type="primary"
-                disabled={addedVa.length < 1 || loadingAssign}
+                disabled={addedVa?.length < 1 || loadingAssign}
                 onClick={onFinish}
               >
                 {loadingAssign && <LoadingOutlined />} Assign
