@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Button, Layout, Divider, notification, Card } from 'antd';
-import { UserOutlined, LockOutlined, KeyOutlined, CopyrightOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useHistory, Link } from 'react-router-dom';
-import './Login.scss';
+import React, { useEffect } from "react";
+import { Form, Input, Button, Layout, Divider, notification, Card } from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  KeyOutlined,
+  CopyrightOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import { useHistory, Link } from "react-router-dom";
+import "./Login.scss";
+import Logo from "../../assets/Images/logo_8.jpg";
 
-import { AuthAPI } from '../../util/ApiGateway/Api';
-import { useState } from 'react';
-import CommonFooter from '../../util/Footer/Footer';
-import axios from 'axios';
+import { AuthAPI } from "../../util/ApiGateway/Api";
+import { useState } from "react";
+import CommonFooter from "../../util/Footer/Footer";
+import axios from "axios";
 
 const { Header, Content, Footer } = Layout;
 
@@ -21,57 +28,76 @@ const Login = () => {
     notification[type]({
       message: message,
       description: description,
-      duration: type === 'error' ? 6 : 2,
+      duration: type === "error" ? 6 : 2,
       style: {
-        backgroundColor: type === 'error' ? "#ffccc7" : '#f6ffed'
-      }
+        backgroundColor: type === "error" ? "#ffccc7" : "#f6ffed",
+      },
     });
   };
 
   useEffect(() => {
-
-    document.title = 'MedSavvy';
+    document.title = "MedSavvy";
     window.scrollTo(0, 0);
   }, []);
 
   const onFinish = async (values) => {
-    console.log(values)
+    console.log(values);
     try {
       setLoading(true);
-      const { data } = await axios.post('http://localhost:8001/api/v1/auth/signin', values);
+      const { data } = await axios.post(
+        "http://localhost:8001/api/v1/auth/signin",
+        values
+      );
 
-      console.log('LOGIN INFORMATION ', data.data);
-      localStorage.setItem('user_id', data.data.user_id);
-      localStorage.setItem('accessToken', data.data.token);
-      localStorage.setItem('userRole',data.data.role_name);
-      localStorage.setItem('username', data.data.username);
-      localStorage.setItem('role_id', data.data.role_id);
-      localStorage.setItem('roleAccess', data.data.permission_list);
+      console.log("LOGIN INFORMATION ", data.data);
+      localStorage.setItem("user_id", data.data.user_id);
+      localStorage.setItem("accessToken", data.data.token);
+      localStorage.setItem("userRole", data.data.role_name);
+      localStorage.setItem("username", data.data.username);
+      localStorage.setItem("role_id", data.data.role_id);
+      localStorage.setItem("roleAccess", data.data.permission_list);
 
       setLoading(false);
 
-      notificationFun('Successfully Logged In', 'Welcome to Prism CRM', 'success');
-      history.push('/manager');
-
+      notificationFun(
+        "Successfully Logged In",
+        "Welcome to Prism CRM",
+        "success"
+      );
+      history.push("/manager");
     } catch (error) {
       if (error?.response?.data?.message) {
         form.setFieldsValue({
           userID: values.userID,
-          password: ''
+          password: "",
         });
         setLoading(false);
-        if (error?.response?.data?.message === 'System is under maintenance!!') {
-          notificationFun(error?.response?.data?.message, 'System is under maintenance!!', 'error');
+        if (
+          error?.response?.data?.message === "System is under maintenance!!"
+        ) {
+          notificationFun(
+            error?.response?.data?.message,
+            "System is under maintenance!!",
+            "error"
+          );
           localStorage.clear();
-          history.push('/under-maintenance');
+          history.push("/under-maintenance");
         } else {
-          notificationFun(error?.response?.data?.message, 'Please enter correct User ID & Password', 'error');
+          notificationFun(
+            error?.response?.data?.message,
+            "Please enter correct User ID & Password",
+            "error"
+          );
         }
       } else {
-        notificationFun("Something went wrong", 'Please check your connection', 'error');
+        notificationFun(
+          "Something went wrong",
+          "Please check your connection",
+          "error"
+        );
         form.setFieldsValue({
           userID: values.userID,
-          password: ''
+          password: "",
         });
         setLoading(false);
       }
@@ -85,14 +111,11 @@ const Login = () => {
       </div>
       <Content>
         <Card
-          title="Welcome To MedSavvy"
+          title="Welcome"
           className="login-form"
+          cover={<img src={Logo} height="120px" width="60px" alt="logo" />}
         >
-          <Form
-            form={form}
-            name="normal_login"
-            onFinish={onFinish}
-          >
+          <Form form={form} name="normal_login" onFinish={onFinish}>
             <Form.Item
               name="user_name"
               rules={[

@@ -8,7 +8,7 @@ const { Footer } = Layout;
 const CommonFooter = () => {
 
     return (
-        <Footer style={{ textAlign: 'center' }}><span><CopyrightOutlined /></span> {/* v2 Technologies LTD  - */} { moment(new Date()).format('YYYY') } ( {process.env.REACT_APP_STAGE} )</Footer>
+        <Footer style={{ textAlign: 'center' }}><span><CopyrightOutlined /></span> { moment(new Date()).format('YYYY') } All rights reserved by Team2</Footer>
     )
 }
 

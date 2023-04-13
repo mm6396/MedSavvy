@@ -19,6 +19,16 @@
     font-size: larger;
 
  }
+ .ant-card {
+    background : #ffffffb8;
+
+ }
+ .ant-card-bordered .ant-card-cover {
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: 150px;
+    width: 160px;
+  }
  .ant-input-affix-wrapper {
      color: #c4b6b6;
      border-radius: 40px;
