@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
 import { FaEdit, FaUserCheck } from 'react-icons/fa';
 import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
-import { EditOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, DownOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { EditOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, UserAddOutlined} from '@ant-design/icons';
+import { useHistory, useParams } from 'react-router-dom';
 import { IoMdSettings } from 'react-icons/io';
 import { GiMatchHead } from 'react-icons/gi';
 import { GrCluster, GrTarget } from 'react-icons/gr';
@@ -25,6 +25,7 @@ const CampaignList = () => {
     const [data, setdata] = useState([]);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 25 });
     let history = useHistory();
+    let {id} = useParams();
 
     const updateStatus = (record, event) => {
         // let status = event | 0
@@ -61,16 +62,16 @@ const CampaignList = () => {
             cancelText: 'No',
             onOk: async () => {
                 try {
-                    await CampaignManagerAPI.delete(`/delete-campaign/${id}`, {
+                    await axios.patch(`http://localhost:8001/api/v1/campaignRouter/delete-campaign`, {id},{
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem("accessToken")
                         }
                     });
 
-                    let temp = data.filter(i => i.key !== id).map((v, i) => {
+                    let temp = data.filter(i => i.id !== id).map((v, i) => {
                         return {
                             ...v,
-                            user_id: i + 1,
+                            key: i + 1,
                         }
                     });
                     setdata([...temp]);
@@ -180,16 +181,28 @@ const CampaignList = () => {
                             key={record.id}
                         />
                     </Tooltip>
+                    <Tooltip title="Assign VA" >
+						<UserAddOutlined className=" table-icon edit "
+							onClick={(e) => {
+								console.log(record);
+								history.push({
+									pathname: '/manager/campaign/assign-va/' + record.id,
+									state: record.name
+								});
+							}}
+							key={record.id}
+						/>
+					</Tooltip>
                     {/* }
                   {localStorage.getItem('campaign')?.split(',').includes('2') && */}
                     <Tooltip title="Edit" >
                         <FaEdit className=" table-icon edit "
                             onClick={(e) => {
                                 history.push({
-                                    pathname: '/manager/campaign/update/' + record.key,
+                                    pathname: '/manager/campaign/update/' + record.id,
                                 });
                             }}
-                            key={record.key}
+                            key={record.id}
                         />
                     </Tooltip>
                     {/* }
@@ -197,7 +210,7 @@ const CampaignList = () => {
                   {localStorage.getItem('campaign')?.split(',').includes('4') && */}
                     <Tooltip title="Delete" >
                         <RiDeleteBinLine className=" table-icon  delete"
-                            onClick={(e) => { deleteCampaign(record.key) }}
+                            onClick={(e) => { deleteCampaign(record.id) }}
                             key={record.key}
                         />
                     </Tooltip>

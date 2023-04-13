@@ -1,0 +1,75 @@
+.valist-table{
+  // margin-top: 20px;
+  .ant-card-head {
+    background: #00ab55;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    font-size: 14px;
+  }
+  .ant-card-body {
+    margin-top: 20px;
+    padding: 10px 0 0 0;
+  }
+  .card-body-list {
+    overflow: auto;
+    max-height: 700px;
+  }
+  .remove-btn {
+    font-size: 13px;
+  }
+
+  thead{
+      tr{
+          th{
+              text-align: center;
+              background-color: #00ab55;
+              color: white;
+              border-right: 1px solid white;
+              font-weight: bold;
+          }
+      }
+  }
+
+  tbody{
+      tr{
+          td{
+              // font-weight: 600;
+              text-align: center;
+
+              .table-icons{
+                  .table-icon{
+                      color: #CCCCCC;
+                      margin-left: 10% ;
+                      font-size: 18px;
+                      cursor: pointer;
+                      transition: .2s all linear;
+                  }
+                  .add-to-cart:hover{
+                       color: #00B1EB;   
+                  }
+                  .edit:hover{
+                      color: green;
+                  }
+                  .delete:hover{
+                      color: #E72582;
+                  }
+              }
+          }
+      }
+  }
+}
+.ant-popover-placement-top{
+  .ant-popover-title{
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+
+.table-row-light {
+  background-color: #ffffff;
+}
+.table-row-dark {
+  background-color: #a1ffc8;
+}
