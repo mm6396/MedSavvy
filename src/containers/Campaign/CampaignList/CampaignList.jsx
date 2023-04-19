@@ -172,7 +172,6 @@ const CampaignList = () => {
                     <Tooltip title="Create Questions" >
                         <EditOutlined className=" table-icon edit "
                             onClick={(e) => {
-                                console.log(record);
                                 history.push({
                                     pathname: '/manager/campaign/create-question/' + record.id,
                                     state: record.name
@@ -181,10 +180,10 @@ const CampaignList = () => {
                             key={record.id}
                         />
                     </Tooltip>
-                    <Tooltip title="Assign VA" >
+                    <Tooltip title="Assign Sales People" >
 						<UserAddOutlined className=" table-icon edit "
 							onClick={(e) => {
-								console.log(record);
+							
 								history.push({
 									pathname: '/manager/campaign/assign-va/' + record.id,
 									state: record.name

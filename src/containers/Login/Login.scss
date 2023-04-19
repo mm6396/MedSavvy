@@ -12,6 +12,20 @@
      transform: translate(-50%, -50%);
      min-width: 450px;
  }
+
+ .login-form-forgot {
+    color: #c4b6b6;
+    font-size: 14px;
+}
+
+.fp-divider {
+    .ant-divider-horizontal {
+        margin: auto;
+        border-color:#c4b6b6;
+        width: 40%;
+        min-width: 0;     
+    }
+}
  .ant-card-head-title {
     text-align: center;
     font-weight: bold;
@@ -20,7 +34,7 @@
 
  }
  .ant-card {
-    background : #ffffffb8;
+    background : #ffffff;
 
  }
  .ant-card-bordered .ant-card-cover {

@@ -12,6 +12,7 @@ import Logo from '../../../assets/Images/ecrmLogoTemp.png';
 
 import Tree from '../../../assets/Images/login-tree.svg';
 import CommonFooter from '../../../util/Footer/Footer';
+import Nav from '../../../components/common/Nav/Nav';
 
 const { Header, Content, Footer } = Layout;
 
@@ -56,20 +57,8 @@ const ResetPasswordView = () => {
 
 	return (
 		<Layout className="login-layout" style={{ height: '100vh' }}>
-			<Header className="login-header">
-				<Link to='/manager' className="logo-link" >
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-						<img className="app_logo" src={Logo} height="50px" alt="logo" />
-						{/* <p style={{ fontWeight: 'bold', color: '#004f9f', fontSize: '20px', margin: '0' }}>
-							Prism CRM
-                  		</p> */}
-					</div>
-				</Link>
-				<div className="systemlogin-text">System Login</div>
-			</Header>
-			<div className="head-divider"><Divider /></div>
+			<Nav auth = 'true'/>
 			<Content>
-				<div><img className="img_tree" src={Tree} alt="login-tree" /></div>
 				<Form
 					layout="vertical"
 					form={form}
@@ -77,7 +66,6 @@ const ResetPasswordView = () => {
 					className="login-form"
 					onFinish={onFinish}
 				>
-					<div className="systemlogin-mbl">System Login</div>
 					<Form.Item
 						name="password"
 						label="New Password"

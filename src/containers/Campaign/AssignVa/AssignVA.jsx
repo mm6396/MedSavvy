@@ -15,15 +15,11 @@ const AssignVA = () => {
   let history = useHistory();
   const [loading, setLoading] = useState(false);
   const [addedVa, setAddedVa] = useState([]);
-  const [addedVaList, setAddVaList] = useState([]);
   const [vaList, setVaList] = useState([]);
   const [data, setData] = useState([]);
-  const [vadata, setVaData] = useState([]);
   const [assignedList, setAssignedList] = useState([]);
-  const [vaSupList, setSupVaList] = useState([]);
   const [loadingAssign, setLoadingAssign] = useState(false);
-  const [selectedVARowKeys, setSelectedVARowKeys] = useState([]);
-  const [selectedVASUPRows, setSelectedVASUPRows] = useState([]);
+  const [selectedRowKeys,  setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [campaign, setCampaign] = useState("");
   const [deleteId,setDeleteId] = useState({});
@@ -43,8 +39,9 @@ const AssignVA = () => {
   const fetchVaList = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:8001/api/v1/userRouter/userList",
+      const { data } = await axios.post(
+        "http://localhost:8001/api/v1/campaignRouter/spList",
+        { campaign_id: id },
         
         {
           headers: {
@@ -53,23 +50,33 @@ const AssignVA = () => {
         }
       );
       console.log(data)
-      let list = data?.data.filter(el => el.role_id == 2 );
-      console.log(list)
-      setData(list);
+      setData([...data?.data?.valist.map(v=> {
+        return {
+          ...v,
+          key: v.id
+        }
+      })]);
   
-      // setAddVaList(data.assigned_list);
-      // setAddedVa(data.assigned_list);
+  
+      setAddedVa([...data?.data?.assigned_list.map(v=> {
+        return {
+          ...v,
+          key: v.id
+        }
+      })]);
       // setAssignedList(data.assigned_list);
-      // const existingVA = data.assigned_list.map(
-      //   (addedPerson) => addedPerson.id
-      // );
-      // let vaListData = data.assigned_list.filter(o1 => data.valist.some(o2 => o1.id === o2.id));
-      // const existingVA = vaListData.map((v,i)=>{
-      //   return v.id
-      // })
-
-      // setSelectedVARowKeys([...existingVA]);
-      setVaList(list);
+      let spListData = data?.data?.assigned_list.filter(o1 => data?.data?.valist.some(o2 => o1.id === o2.id));
+      const existingVA = spListData.map((v,i)=>{
+        return v.id
+      })
+      console.log(existingVA)
+      setSelectedRowKeys([...existingVA]);
+      setVaList([...data?.data?.valist.map(v=> {
+        return {
+          ...v,
+          key: v.id
+        }
+      })]);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -96,48 +103,48 @@ const AssignVA = () => {
       title: "Name",
       dataIndex: "name",
       key: "full_name",
-      width: "20%",
+      width: "30%",
     },
     {
       title: "Role",
       dataIndex: "role_name",
       key: "role",
-      width: "20%",
+      width: "30%",
     },
-    {
-      title: "Action",
-      dataIndex: "stts",
-      render: (text, record) => (
-        <div
-          className="table-icons"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Popover title="Add this BR">
-            <PlusCircleOutlined
-              className=" table-icon add-to-cart "
-              onClick={(e) => {
-                const existingVA = addedVa.map((addedPerson) => addedPerson.id);
-                if (!existingVA.includes(record.id)) {
-                  const added_br = [...addedVa, record];
-                  setAddedVa(added_br);
-                } else {
-                  CustomNotification(
-                    "Try adding another BR",
-                    "This BR already added",
-                    "warning"
-                  );
-                }
-              }}
-              key={record.id}
-            />
-          </Popover>
-        </div>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "stts",
+    //   render: (text, record) => (
+    //     <div
+    //       className="table-icons"
+    //       style={{
+    //         display: "flex",
+    //         alignItems: "center",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       <Popover title="Add this user">
+    //         <PlusCircleOutlined
+    //           className=" table-icon add-to-cart "
+    //           onClick={(e) => {
+    //             const existingVA = addedVa.map((addedPerson) => addedPerson.id);
+    //             if (!existingVA.includes(record.id)) {
+    //               const added_br = [...addedVa, record];
+    //               setAddedVa(added_br);
+    //             } else {
+    //               CustomNotification(
+    //                 "Try adding another User",
+    //                 "This User already added",
+    //                 "warning"
+    //               );
+    //             }
+    //           }}
+    //           key={record.id}
+    //         />
+    //       </Popover>
+    //     </div>
+    //   ),
+    // },
   ];
 
   const showModal = (id) => {
@@ -176,13 +183,11 @@ const AssignVA = () => {
     const userData = addedVa.filter((va)=> va.id !== deleteId.id);
     // console.log("selectedRowKeys",selectedVARowKeys)
     // console.log("selectedRowKeys1",selectedVASUPRows)
-    const removeVAarr = selectedVARowKeys.filter((val) => val != deleteId.id);
-    const removeVAarr1 = selectedVASUPRows.filter((val) => val != deleteId.id);
+    const removeVAarr = selectedRowKeys.filter((val) => val != deleteId.id);
     // console.log("removeVAarr",removeVAarr)
     // console.log("removeVAarr1",removeVAarr1)
     setAddedVa(userData)
-    setSelectedVARowKeys([...removeVAarr])
-    setSelectedVASUPRows([...removeVAarr1])
+    setSelectedRowKeys([...removeVAarr])
 
 	CustomNotification(data.response, "Remove successfully", "success");
 	} catch (error) {
@@ -256,10 +261,9 @@ const AssignVA = () => {
   };
 
   const rowSelection = {
-    selectedRowKeys: selectedVARowKeys,
-    onChange: (selectedRowKeys) => {
-      // console.log("VA rows",selectedRowKeys);
-      setSelectedVARowKeys([...selectedRowKeys]);
+    selectedRowKeys,
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRowKeys([...selectedRowKeys]);
       // console.log("VA added", addedVa);
       const existingVA = addedVa.map((addedPerson) => addedPerson.id);
       // console.log("first",addedVa)
@@ -282,7 +286,6 @@ const AssignVA = () => {
       // console.log("tempArr",tempArr)
       const added_br = vaList.filter((val) => arr.includes(val.id));
       const added_br1 = vaList.filter((val) => selectedRowKeys.includes(val.id));
-      const added_br2 = vaSupList.filter((val) => tempArr.includes(val.id));
       // console.log("added_br", added_br);
       // console.log("added_br1", added_br1);
       // setAddedVa([...addedVa, ...added_br]);
@@ -291,16 +294,60 @@ const AssignVA = () => {
       // console.log("added_br2", added_br2);
       if(added_br.length > 0){
         setAddedVa([...addedVa, ...added_br]);
-        setAddVaList([...addedVa, ...added_br]);
-      }else if(added_br.length === 0){
-        setAddedVa([...added_br2,...added_br1]);
-        setAddVaList([...added_br2,...added_br1]);
       }
-    },
+
+
+
+
+    //   console.log("VA rows",selectedRowKeys, selectedRows);
+    //   setSelectedRowKeys([...selectedRowKeys]);
+    //   // console.log("VA added", addedVa);
+    // //   console.log("first",addedVa)
+    //   const existingVA = addedVa?.map((addedPerson) => addedPerson.id);
+     
+    // //   console.log("existingVA",existingVA)
+    //   const arr = selectedRowKeys.filter((val) => !existingVA.includes(val));
+    //   console.log(arr)
+
+    //   var tempArr = selectedRows.filter((item)=> {
+    //     return !existingVA.includes(item.id); 
+    //   });
+    //   console.log(tempArr)
+ 
+    //     let arr1 = addedVa.concat(tempArr)
+    //     setAddedVa(arr1);
+      
+
+    //   let addedVaList = addedVa.map((v,i)=>{
+    //     return v.id;
+    //   })
+    //   console.log("addedVaList",addedVaList)
+
+    //   var tempArr = addedVaList.filter((item)=> {
+    //     return !selectedRowKeys.includes(item); 
+    //   });
+    //   // console.log("tempArr",tempArr)
+    //   const added_br = vaList.filter((val) => arr.includes(val.id));
+    //   const added_br1 = vaList.filter((val) => selectedRowKeys.includes(val.id));
+    //   const added_br2 = vaSupList.filter((val) => tempArr.includes(val.id));
+    //   // console.log("added_br", added_br);
+    //   // console.log("added_br1", added_br1);
+    //   // setAddedVa([...addedVa, ...added_br]);
+    //   // setAddVaList([...addedVa, ...added_br]);
+    //   // console.log("added_br1", added_br1);
+    //   // console.log("added_br2", added_br2);
+    //   if(added_br.length > 0){
+    //     setAddedVa([...addedVa, ...added_br]);
+    //     setAddVaList([...addedVa, ...added_br]);
+    //   }else if(added_br.length === 0){
+    //     setAddedVa([...added_br2,...added_br1]);
+    //     setAddVaList([...added_br2,...added_br1]);
+    //   }
+     },
   };
 
-
-  const searcher = new FuzzySearch(data, ["uid"], { sort: true });
+  console.log(addedVa)
+  const searcher = new FuzzySearch(data, ["username", "name"], { sort: true });
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -370,7 +417,7 @@ const AssignVA = () => {
                   <Row key={va.id} style={{ alignItems: "baseline" }}>
                     <Col span={16} offset={3}>
                       <p>
-                        {va.full_name}- {va.uid} ({va.role})
+                        {va.name}- {va.username} 
                       </p>
                     </Col>
                     <Col span={5}>

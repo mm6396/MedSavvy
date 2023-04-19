@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Layout, Divider } from 'antd';
-import { MailOutlined, CopyrightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Layout } from 'antd';
+import { MailOutlined,LoadingOutlined } from '@ant-design/icons';
 import { useHistory, Link } from 'react-router-dom';
 
-import { AuthAPI } from '../../../util/ApiGateway/Api';
 import notification from '../../../util/Notification/Notification';
 import ErrorHandler from '../../../util/ErrorHandler/ErrorHandler'
-
-import Logo from '../../../assets/Images/ecrmLogoTemp.png';
-// import white from '../../../assets/Images/Unload.png';
-
-import Tree from '../../../assets/Images/login-tree.svg';
 import CommonFooter from '../../../util/Footer/Footer';
+import Nav from '../../../components/common/Nav/Nav';
+import axios from 'axios';
 
-const { Header, Content, Footer } = Layout;
+const {Content} = Layout;
 
 const EmailSendView = () => {
 	let history = useHistory();
@@ -27,10 +23,12 @@ const EmailSendView = () => {
 	}, []);
 
 	const onFinish = async (email) => {
+		console.log(email)
 		try {
 			setLoading(true);
-			await AuthAPI.post('/forget-password', email);
-			notification('Done!', 'Please check your email', 'success');
+			const {data} = await axios.post('http://localhost:8001/api/v1/auth/forget-password', email);
+			console.log(data);
+			notification('Done!', 'Please check your email after few seconds', 'success');
 			form.setFieldsValue({
 				email: ''
 			});
@@ -49,27 +47,14 @@ const EmailSendView = () => {
 
 	return (
 		<Layout className="login-layout" style={{ height: '100vh' }}>
-			<Header className="login-header">
-				<Link to='/manager' className="logo-link" >
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-						<img className="app_logo" src={Logo} height="50px" alt="logo" />
-						{/* <p style={{ fontWeight: 'bold', color: '#004f9f', fontSize: '20px', margin: '0' }}>
-							Prism CRM
-                  		</p> */}
-					</div>
-				</Link>
-				<div className="systemlogin-text">System Login</div>
-			</Header>
-			<div className="head-divider"><Divider /></div>
+			<Nav auth = "true"/>
 			<Content>
-				<div><img className="img_tree" src={Tree} alt="login-tree" /></div>
 				<Form
 					form={form}
 					name="normal_login"
 					className="login-form"
 					onFinish={onFinish}
 				>
-					<div className="systemlogin-mbl">System Login</div>
 					<Form.Item
 						name="email"
 						rules={[
@@ -88,8 +73,13 @@ const EmailSendView = () => {
 					<Form.Item>
 						<Button type="primary" disabled={loading} htmlType="submit" className="login-form-button">
 							{loading && <LoadingOutlined />} Send Email
-                  </Button>
+						</Button>
 					</Form.Item>
+					<div style={{ textAlign: "center" }} >
+						<Link className="log_btn" style={{}} to="/login" >
+							Go Back to Login
+						</Link>
+					</div>
 				</Form>
 			</Content>
 			<CommonFooter />

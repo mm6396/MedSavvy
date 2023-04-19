@@ -106,9 +106,6 @@ const Login = () => {
 
   return (
     <Layout className="login-layout" style={{ height: "100vh" }}>
-      <div className="head-divider">
-        <Divider />
-      </div>
       <Content>
         <Card
           title="Welcome"
@@ -155,6 +152,13 @@ const Login = () => {
                 {loading && <LoadingOutlined />} Log in
               </Button>
             </Form.Item>
+            <br />
+              <div style={{ textAlign: "center" }} >
+                <Link className="login-form-forgot" to="/forgot-password" >
+                  <span> <KeyOutlined /></span> Forgot password?
+                </Link>
+              </div>
+              <div className="fp-divider"><Divider /></div>
           </Form>
         </Card>
       </Content>

@@ -9,6 +9,8 @@ import SiderNav from '../../components/common/SiderNav/SiderNav';
 import PageNotFound from '../../util/PageNotFound/PageNotFound';
 import UserManagerLayout from './UserManagerLayout';
 import RoleManagerLayout from './RoleManagerLayout/RoleManagerLayout';
+import CampaignSelection from '../../containers/SurveyManager/campaignSelect';
+import SurevyList from '../../containers/SurveyManager/SurveyList';
 
 const ManagerLayout = () => {
 
@@ -43,6 +45,8 @@ const ManagerLayout = () => {
                         <Route path="/manager/dashboard" component={DashboardLayout} />
                         <Route path="/manager/user" component={UserManagerLayout} />
                         <Route path="/manager/role" component={RoleManagerLayout} />
+                        <Route path = "/manager/survey/view" component = {CampaignSelection}/>
+                        <Route path = "/manager/survey/list" component = {SurevyList}/>
                         {/* <Route path="/manager/report-manager" component={ReportManagerLayout} />
                         <Route path="/manager/audience-manager" component={AudienceManagerLayout} />
                         <Route path="/manager/location-manager" component={LocationManagerLayout} />

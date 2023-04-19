@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import UserCreate from '../containers/User/UserCreate';
 import UserList from '../containers/User/UserList';
 import UserUpdate from '../containers/User/UserUpdate';
