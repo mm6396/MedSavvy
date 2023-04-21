@@ -119,7 +119,7 @@ const UserUpdate = () => {
                 onFinish={onFinish}
                 form={form}
             >
-                <h1 style={{ fontSize: '20px', textAlign: 'center', fontWeight: 'bold' }}>User Creation</h1>
+                <h1 style={{ fontSize: '20px', textAlign: 'center', fontWeight: 'bold' }}>User Update</h1>
                 <br />
                 <br />
                 <Row>

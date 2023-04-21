@@ -1,21 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Statistic } from 'antd';
+import { Card, Col, Row, Statistic, Select } from 'antd';
 import { Column } from '@ant-design/plots';
 import './RootDashboard.scss';
 import Pie from './Pie';
 import PieChart from './Pie';
+import axios from 'axios';
+import ErrorHandler from '../../../util/ErrorHandler/ErrorHandler';
+import notificationFun from '../../../util/Notification/Notification';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
+const { Option } = Select;
 
 const RootDashboard = () => {
+    const [campList, setCamp] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [pieData, setPieData] = useState([{type:'A', value: 0}]);
+    let history = useHistory();
 
     useEffect(() => {
 
-        document.title = 'CRM Dashboard ';
-
+        document.title = 'Medsavvy Dashboard ';
         window.scrollTo(0, 0);
-
+        fetchCampaign();
     }, []);
+
+    const fetchCampaign = async () => {
+        try {
+            setLoading(true);
+            const { data } = await axios.get('http://localhost:8001/api/v1/campaignRouter/campaignList', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+
+                }
+            });
+            console.log(data);
+            let users = data.data.map((v, i) => {
+                return {
+                    ...v,
+                    key: i + 1
+                }
+            })
+            setCamp(users);
+            setLoading(false);
+        } catch (error) {
+            if (error?.response?.data?.message) {
+                ErrorHandler(error?.response?.data?.message, history);
+                // notification(error?.response?.data?.message, 'Please fix this error and try again. Otherwise communicate with the admin', 'error');
+            } else {
+                notificationFun('Something went wrong', 'Please check your internet connection and try again or communicate with the admin', 'error');
+            }
+        }
+    }
 
     const data = [
         {
@@ -61,35 +97,63 @@ const RootDashboard = () => {
         },
     };
 
-    const data2 = [
-        {
-          type: 'Product A',
-          value: 27,
-        },
-        {
-          type: 'Product B',
-          value: 25,
-        },
-        {
-          type: 'Product C',
-          value: 18,
-        },
-        {
-          type: 'Product D',
-          value: 15,
-        },
-        {
-          type: 'Product E',
-          value: 10,
-        },
-        {
-          type: 'Product F',
-          value: 5,
-        },
-      ];
+    const fetchPriceOpinion= async(e) => {
+
+    }
+
+    const onCampaignChange = async(e) => {
+        console.log(e);
+        // if(e) {
+            try {
+                setLoading(true);
+                const { data } = await axios.post('http://localhost:8001/api/v1/dashBoardRouter/analysis-1', {camp_id: e}, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+    
+                    }
+                });
+                console.log(data);
+                let temp = data?.data.map(v=> {
+                    return {
+                        type: v.age,
+                        value: parseInt(v.customer_age_count)
+                    }
+                })
+                setPieData(temp);
+                setLoading(false);
+                fetchPriceOpinion();
+            } catch (error) {
+                if (error?.response?.data?.message) {
+                    ErrorHandler(error?.response?.data?.message, history);
+                    // notification(error?.response?.data?.message, 'Please fix this error and try again. Otherwise communicate with the admin', 'error');
+                } else {
+                    notificationFun('Something went wrong', 'Please check your internet connection and try again or communicate with the admin', 'error');
+                }
+            }
+        // }
+    } 
 
     return (
         <div className="rootdashboard-div">
+            <div>
+                
+                <Select
+                    placeholder="Select a Campaign"
+                    style={{ width: "30%" }}
+                    // allowClear
+                    showSearch
+                    showArrow
+                    optionFilterProp="children"
+                    onSelect={onCampaignChange}
+                >
+                    {campList?.map((v, i) => (
+                        <Option value={v.id} key={v.id}>
+                            {v.camp_name}
+                        </Option>
+                    ))}
+
+                </Select>
+            </div>
             <Row>
                 {/* <Col span={24} className="logo-div">
                     <Tilt className="Tilt" options={{ max: 25 }} style={{ width: 376, position: 'relative' }} >
@@ -150,15 +214,15 @@ const RootDashboard = () => {
             <br />
             <Row>
 
-                <Col lg = {{ span: 7, offset:1}} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
+                <Col lg={{ span: 7, offset: 1 }} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
                     <Column {...config} />
                     <div>Total Survey of Each Campaign</div>
 
                 </Col>
-                <Col lg = {{ span: 7, offset:3}} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
+                <Col lg={{ span: 7, offset: 3 }} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
 
-                  <PieChart data = {data2}/>
-                  <div>Preference of Customer</div>
+                    <PieChart data={pieData} />
+                    <div>Variation of Customer By Age</div>
                 </Col>
                 {/* <Col span={7} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
 

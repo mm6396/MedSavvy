@@ -13,6 +13,7 @@ import Logo from '../../../assets/Images/ecrmLogoTemp.png';
 import Tree from '../../../assets/Images/login-tree.svg';
 import CommonFooter from '../../../util/Footer/Footer';
 import Nav from '../../../components/common/Nav/Nav';
+import axios from 'axios';
 
 const { Header, Content, Footer } = Layout;
 
@@ -31,7 +32,13 @@ const ResetPasswordView = () => {
 	const onFinish = async (values) => {
 		try {
 			setLoading(true);
-			await AuthAPI.post('/reset-password', { password: values.password, token: token });
+			await axios.post('http://localhost:8001/api/v1/auth/reset-password', { password: values.password, token: token },
+			{
+				headers: {
+				  Authorization: "Bearer " + token,
+				},
+			},
+			);
 			notification('Done!', 'Password Changed Successfully', 'success');
 			setLoading(false);
 			history.push('/login');
@@ -112,6 +119,11 @@ const ResetPasswordView = () => {
 							{loading && <LoadingOutlined />} Change Password
                      </Button>
 					</Form.Item>
+					<div style={{ textAlign: "center" }} >
+						<Link className="log_btn" style={{}} to="/login" >
+							Go Back to Login
+						</Link>
+					</div>
 				</Form>
 			</Content>
 			<CommonFooter />

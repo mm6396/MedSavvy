@@ -19,13 +19,36 @@ const UserCreate = () => {
     const [loading, setLoading] = useState(false);
     const [roleList, setRoleList] = useState([]);
     const [ allUsers, setAllUsers ] = useState([]);
+    const [ allEmail, setAllEmail ] = useState([]);
 
     useEffect(() => {
 
         document.title = 'User Create';
         window.scrollTo(0, 0);
+        fetchAllUsers();
 
     }, []);
+
+    
+    const fetchAllUsers = async () => {
+        setLoading(true);
+        try {
+            const { data } = await axios.get('http://localhost:8001/api/v1/userRouter/all-userList', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+
+                }
+            });
+            setAllUsers(data.data.map( val => val.username ));
+            setAllEmail(data.data.map( val => val.email ));
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            if (error?.response?.data?.message) {
+                ErrorHandler(error?.response?.data?.message, history);
+            }
+        }
+    };
 
     useEffect(() => {
         (async () => {
@@ -111,6 +134,10 @@ const UserCreate = () => {
                                             required: true,
                                             message: 'Please input your E-mail!',
                                         },
+                                        {
+                                            validator: (_, value) =>
+                                              !allEmail.includes(value) ? Promise.resolve() : Promise.reject('Email Already Exists'),
+                                          },
                                     ]}
                                 >
                                     <Input placeholder="enter email.."/>
@@ -165,10 +192,10 @@ const UserCreate = () => {
                                 {
                              required: true, message: 'Please select typpe!' 
                              },
-                            //  {
-                            //     validator: (_, value) =>
-                            //       !allUsers.includes(value) ? Promise.resolve() : Promise.reject('User name Already exists'),
-                            //   },
+                             {
+                                validator: (_, value) =>
+                                  !allUsers.includes(value) ? Promise.resolve() : Promise.reject('User name Already exists'),
+                              },
                              ]}>
                             <Input placeholder="enter username.."/>
                         </Form.Item>

@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Table, Input, Col, Tooltip, Switch, Modal, Dropdown, Menu } from 'antd';
-import { FaEdit, FaUserCheck } from 'react-icons/fa';
-import { RiDeleteBinLine, RiCurrencyLine, RiPlayListAddLine } from 'react-icons/ri';
-import { EditOutlined, ExclamationCircleOutlined, UnorderedListOutlined, MoneyCollectOutlined, UserAddOutlined} from '@ant-design/icons';
+import { Row, Table, Input, Col, Tooltip, Modal } from 'antd';
+import { FaEdit,  } from 'react-icons/fa';
+import { RiDeleteBinLine} from 'react-icons/ri';
+import { EditOutlined, ExclamationCircleOutlined, UserAddOutlined} from '@ant-design/icons';
 import { useHistory, useParams } from 'react-router-dom';
-import { IoMdSettings } from 'react-icons/io';
-import { GiMatchHead } from 'react-icons/gi';
-import { GrCluster, GrTarget } from 'react-icons/gr';
 import FuzzySearch from 'fuzzy-search';
 import notification from "../../../util/Notification/Notification";
-import { CampaignManagerAPI } from '../../../util/ApiGateway/Api';
 import ErrorHandler from '../../../util/ErrorHandler/ErrorHandler'
 
 import './CampaignList.scss';
@@ -20,12 +16,9 @@ const { confirm } = Modal;
 
 const CampaignList = () => {
     const [loading, setLoading] = useState(true);
-    const [loadingSwitch, setLoadingSwitch] = useState(false);
     const [dataSet, setDataSet] = useState([]);
     const [data, setdata] = useState([]);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 25 });
     let history = useHistory();
-    let {id} = useParams();
 
     const updateStatus = (record, event) => {
         // let status = event | 0

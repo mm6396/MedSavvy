@@ -23,7 +23,6 @@ const EmailSendView = () => {
 	}, []);
 
 	const onFinish = async (email) => {
-		console.log(email)
 		try {
 			setLoading(true);
 			const {data} = await axios.post('http://localhost:8001/api/v1/auth/forget-password', email);
@@ -35,7 +34,7 @@ const EmailSendView = () => {
 			setLoading(false);
 		} catch (error) {
 			if (error?.response?.data?.message) {
-				ErrorHandler(error?.response?.data?.message, history);
+				// ErrorHandler(error?.response?.data?.message, history);
 				notification(error?.response?.data?.message, 'Please enter correct Email', 'error');
 				setLoading(false);
 			} else {

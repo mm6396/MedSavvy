@@ -14,7 +14,7 @@ const Layouts = () => {
         <Switch>
             <Route exact path="/" render={() => <Redirect to="/login" />} />
             <Route exact path="/forgot-password" component = {EmailSendView} />
-            <Route exact path="/reset-password" component = {ResetPasswordView} />
+            <Route exact path="/reset-password/:token" component = {ResetPasswordView} />
             <LoginCheckRoute exact path="/login" component={Login} />
             <LoggedInRoute path="/manager" component={ManagerLayout} />
             <Route render={() => <PageNotFound/>} />
